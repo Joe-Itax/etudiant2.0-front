@@ -1,5 +1,5 @@
 header {
-  @apply font-semibold text-lg border-b flex justify-start items-center md:px-2 lg:px-6 py-8;
+  @apply font-semibold text-lg border-b flex justify-start items-center px-2 md:px-4 lg:px-6 py-8;
   .logo {
     @apply mr-3 lg:mr-8;
     a img {
@@ -8,7 +8,7 @@ header {
   }
 
   nav.first {
-    @apply flex md:justify-between md:items-center items-end justify-end w-full;
+    @apply flex justify-between md:items-center items-end justify-end w-full;
 
     ul {
       @apply flex md:justify-around w-auto md:items-center gap-3 md:gap-4 lg:gap-8;

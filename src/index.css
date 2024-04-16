@@ -14,12 +14,12 @@ body,
 }
 
 .inputSubmitToLogin {
-  @apply inline-flex items-center shadow-[0_1px_2px_rgba(36,57,141,0.4)] rounded leading-[1.6] text-white cursor-pointer text-[0.9em] brightness-100 whitespace-nowrap px-4 py-[9px] border-[none] hover:brightness-[1.2];
+  @apply items-center shadow-[0_1px_2px_rgba(36,57,141,0.4)] rounded leading-[1.6] text-black cursor-pointer text-[0.9em] brightness-100 whitespace-nowrap px-4 py-[9px] border-[none] hover:brightness-[1.2] w-full;
   transition: all 0.3s;
   background: linear-gradient(
       180deg,
-      rgba(0, 0, 0, 0) 0,
-      rgba(0, 0, 0, 0.2) 100%
+      rgba(255, 255, 255, 0) 0,
+      rgba(255, 255, 255, 0.2) 100%
     )
-    #5396e7;
+    #fff;
 }
