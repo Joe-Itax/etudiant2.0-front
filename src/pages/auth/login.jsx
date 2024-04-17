@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
-import amico from "/assets/amico.svg";
 import axios from "axios";
-
+import amico from "/assets/amico.svg";
+import "./auth.css";
 export default function Login() {
   const {
     register,
@@ -14,20 +14,21 @@ export default function Login() {
   } = useForm();
 
   const onSubmit = async (dataFromUser, event) => {
-    // console.log("data: ", data);
+    // console.log("data: ", dataFromUser);
     event.preventDefault();
     try {
-      const { data } = await axios.post(
-        import.meta.env.VITE_API_BASE_URL,
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_BASE_URL}/api/auth/login`,
         dataFromUser,
         {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
+          withCredentials: true, // Activer l'envoi des cookies avec la requête
         }
       );
       // const dataa = await res.json();
-      console.log(data);
+      console.log(res);
     } catch (error) {
       console.error("Error: ", error);
     }
@@ -54,198 +55,36 @@ export default function Login() {
     setIsFocusPasswordFiel(false);
   };
 
-  //console.log("isFocusEmailFiel: ", isFocusEmailFiel);
-
   return (
-    // {<div className={`relative w-full h-full text-white bg-[#171933]`}>
-    //   <div
-    //     className={`absolute w-full flex flex-col justify-center items-center -translate-x-2/4 -translate-y-2/4 left-2/4 top-2/4 p-4`}
-    //   >
-    //     <h1 className="text-[2.5rem] sm:text-5xl font-bold mb-5 text-center">
-    //       Se connecter
-    //     </h1>
-    //     <div className="login-with-google flex items-center gap-4 mb-4 border border-yellow-50 px-1 py-2 cursor-pointer rounded">
-    //       <svg
-    //         className="w-[30px] h-[30px]"
-    //         viewBox="-3 0 262 262"
-    //         xmlns="http://www.w3.org/2000/svg"
-    //         preserveAspectRatio="xMidYMid"
-    //       >
-    //         <path
-    //           d="M255.878 133.451c0-10.734-.871-18.567-2.756-26.69H130.55v48.448h71.947c-1.45 12.04-9.283 30.172-26.69 42.356l-.244 1.622 38.755 30.023 2.685.268c24.659-22.774 38.875-56.282 38.875-96.027"
-    //           fill="#4285F4"
-    //         />
-    //         <path
-    //           d="M130.55 261.1c35.248 0 64.839-11.605 86.453-31.622l-41.196-31.913c-11.024 7.688-25.82 13.055-45.257 13.055-34.523 0-63.824-22.773-74.269-54.25l-1.531.13-40.298 31.187-.527 1.465C35.393 231.798 79.49 261.1 130.55 261.1"
-    //           fill="#34A853"
-    //         />
-    //         <path
-    //           d="M56.281 156.37c-2.756-8.123-4.351-16.827-4.351-25.82 0-8.994 1.595-17.697 4.206-25.82l-.073-1.73L15.26 71.312l-1.335.635C5.077 89.644 0 109.517 0 130.55s5.077 40.905 13.925 58.602l42.356-32.782"
-    //           fill="#FBBC05"
-    //         />
-    //         <path
-    //           d="M130.55 50.479c24.514 0 41.05 10.589 50.479 19.438l36.844-35.974C195.245 12.91 165.798 0 130.55 0 79.49 0 35.393 29.301 13.925 71.947l42.211 32.783c10.59-31.477 39.891-54.251 74.414-54.251"
-    //           fill="#EB4335"
-    //         />
-    //       </svg>
-    //       <span> Continuer avec Google</span>
-    //     </div>
-
-    //     <div className="mb-4">
-    //       <p>Ou</p>
-    //     </div>
-    //     <form
-    //       onSubmit={handleSubmit(onSubmit)}
-    //       className="bg-[#22244D] px-3 py-6 w-[15rem] min-[350px]:w-[20rem] sm:w-[25rem] rounded border border-solid border-[#2A2E5E] shadow-[0_2px_4px_rgba(0,0,0,0.2)]"
-    //     >
-    //       {/* Champ de l'e-mail */}
-    //       <div className="relative mb-8 emailField">
-    //         <div className="flex flex-col gap-1 relative">
-    //           <label
-    //             htmlFor="email"
-    //             className={`absolute bg-[#171933] px-2 ${
-    //               isFocusEmailFiel
-    //                 ? "-translate-x-1 -translate-y-2/4 left-4 top-0"
-    //                 : "-translate-x-2 -translate-y-2/4 left-4 top-2/4"
-    //             }`}
-    //           >
-    //             Adresse e-mail
-    //           </label>
-    //           <input
-    //             className="w-full h-[50px] bg-[#171933] border border-solid border-[#171933] focus:outline-none focus:border-[#5396e7] focus:shadow-[0_0_0_3px_#4869ee3f] pl-2 rounded"
-    //             onFocus={changeStateEmailField}
-    //             type="email"
-    //             id="email"
-    //             {...register("email", {
-    //               required: "Veuillez indiquer votre adresse e-mail.",
-    //               pattern: {
-    //                 value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-    //                 message: "Veuillez saisir une adresse e-mail valide",
-    //               },
-    //             })}
-    //             onBlur={(e) => {
-    //               const emailValue = getValues("email");
-    //               if (!emailValue) {
-    //                 changeStateEmailFieldFalse();
-    //               }
-    //               // Appeler la fonction onBlur fournie par react-hook-form pour conserver sa fonctionnalité
-    //               register("email").onBlur(e);
-    //             }}
-    //           />
-    //         </div>
-    //         {errors.email?.message && (
-    //           <p className="text-red-500 text-[0.8rem]">
-    //             {errors.email?.message}
-    //           </p>
-    //         )}
-    //       </div>
-    //       {/* Champ du password */}
-
-    //       <div className="relative mb-4 passwordField">
-    //         <div className="flex flex-col gap-1 relative">
-    //           <label
-    //             htmlFor="password"
-    //             className={`absolute bg-[#171933] px-2 ${
-    //               isFocusPasswordFiel
-    //                 ? "-translate-x-1 -translate-y-2/4 left-4 top-0"
-    //                 : "-translate-x-2 -translate-y-2/4 left-4 top-2/4"
-    //             }`}
-    //           >
-    //             Mot de passe
-    //           </label>
-    //           <input
-    //             className="w-full h-[50px] bg-[#171933] border border-solid border-[#171933] focus:outline-none focus:border-[#5396e7] focus:shadow-[0_0_0_3px_#4869ee3f] pl-2 rounded"
-    //             onFocus={changeStatePasswordField}
-    //             type="password"
-    //             id="password"
-    //             {...register("password", {
-    //               required: "Veuillez indiquer votre mot de passe.",
-    //               minLength: {
-    //                 value: 8,
-    //                 message:
-    //                   "Le mot de passe doit contenir au minimum 8 caractère",
-    //               },
-    //               validate: {
-    //                 uppercase: (value) =>
-    //                   /^(?=.*[A-Z])/.test(value) ||
-    //                   "Le mot de passe doit contenir au moins une majuscule",
-    //                 lowercase: (value) =>
-    //                   /^(?=.*[a-z])/.test(value) ||
-    //                   "Le mot de passe doit contenir au moins une minuscule",
-    //                 number: (value) =>
-    //                   /^(?=.*\d)/.test(value) ||
-    //                   "Le mot de passe doit contenir au moins un chiffre",
-    //                 specialCharacter: (value) =>
-    //                   /^(?=.*[@#$*§])/.test(value) ||
-    //                   "Le mot de passe doit contenir au moins un caractère spécial parmi '&#@$*§'",
-    //               },
-    //             })}
-    //             onBlur={(e) => {
-    //               const emailValue = getValues("password");
-    //               if (!emailValue) {
-    //                 changeStatePasswordFieldFalse();
-    //               }
-    //               // Appeler la fonction onBlur fournie par react-hook-form pour conserver sa fonctionnalité
-    //               register("password").onBlur(e);
-    //             }}
-    //           />
-    //         </div>
-    //         {errors.password?.message && (
-    //           <p className="text-red-500 text-[0.8rem]">
-    //             {errors.password?.message}
-    //           </p>
-    //         )}
-    //       </div>
-    //       <div className="font-bold">
-    //         <input
-    //           type="submit"
-    //           value="Se connecter"
-    //           className="inputSubmitToLogin"
-    //         />
-    //       </div>
-    //     </form>
-
-    //     <div className="mt-8 flex flex-col justify-center ">
-    //       <span className="text-center mb-8">
-    //         Pas de compte?{" "}
-    //         <Link
-    //           to="/signup"
-    //           className="text-[#5396e7] underline hover:no-underline"
-    //         >
-    //           Créez-en un
-    //         </Link>
-    //       </span>
-    //     </div>
-    //   </div>
-    // </div>}
-    <div className="w-full h-auto mt-20 flex justify-center items-center relative px-20">
-      <div className="bg-[#371577] flex flex-wrap justify-center gap-20 p-2 min-[360px]:p-4 min-[415px]:p-10 rounded-md mb-20">
-        <div className="img w-80 hidden md:block">
-          <img src={amico} alt="Svg" />
+    <div className="w-full h-auto mt-20 flex justify-center items-center relative min-[860px]:px-20 min-[400px]:px-10 px-4">
+      <div className="bg-[#371577] flex justify-center min-[860px]:gap-16 gap-10 p-4 py-10 rounded-md mb-20 max-w-[70rem] w-full">
+        <div className="img w-[50%] lg:max-w-[25rem] relative hidden md:block">
+          <img
+            src={amico}
+            alt="Svg"
+            className="w-full absolute bottom-[-5rem]"
+          />
         </div>
-        <div className="form flex flex-col items-start justify-around">
-          <h1 className="text-[2rem] sm:text-5xl font-bold mb-5 text-center text-white">
+        <div className="form flex flex-col items-start justify-around md:w-[50%] w-[100%] min-[860px]:max-w-[25rem] max-[768px]:px-12 max-[550px]:px-2">
+          <h1 className="text-[2rem] sm:text-4xl font-bold mb-5 text-left text-white">
             Se connecter
           </h1>
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="mt-4 w-[16rem] min-[320px]:w-[18rem] min-[350px]:w-[20rem] sm:w-[25rem]"
-          >
+          <form onSubmit={handleSubmit(onSubmit)} className="mt-4 w-full">
             {/* Champ de l'e-mail */}
             <div className="relative mb-8 emailField">
               <div className="flex flex-col gap-1 relative">
                 <label
                   htmlFor="email"
-                  className={`absolute bg-[#371577] px-2 pointer-events-none ${
-                    isFocusEmailFiel
-                      ? "-translate-x-1 -translate-y-2/4 left-4 top-0 text-[#CFBEEF]"
-                      : "-translate-x-2 -translate-y-2/4 left-4 top-2/4 text-[#9E6AFF]"
+                  className={`labelControlled ${
+                    isFocusEmailFiel ? "focus" : "noFocus"
                   }`}
                 >
                   Adresse e-mail
                 </label>
                 <input
-                  className="w-full h-[50px] bg-transparent text-white border border-solid border-[#AB8AF1] focus:outline-none focus:border-[#5396e7] focus:shadow-[0_0_0_3px_#4869ee3f] pl-2 rounded"
+                  className={`inputControlled ${
+                    errors.email ? "error" : "noError"
+                  }`}
                   onFocus={changeStateEmailField}
                   type="email"
                   id="email"
@@ -278,16 +117,16 @@ export default function Login() {
               <div className="flex flex-col gap-1 relative">
                 <label
                   htmlFor="password"
-                  className={`absolute bg-[#371577] px-2 pointer-events-none ${
-                    isFocusPasswordFiel
-                      ? "-translate-x-1 -translate-y-2/4 left-4 top-0 text-[#CFBEEF]"
-                      : "-translate-x-2 -translate-y-2/4 left-4 top-2/4 text-[#9E6AFF]"
+                  className={`labelControlled ${
+                    isFocusPasswordFiel ? "focus" : "noFocus"
                   }`}
                 >
                   Mot de passe
                 </label>
                 <input
-                  className="w-full h-[50px] text-white bg-transparent border border-solid border-[#AB8AF1] focus:outline-none focus:border-[#5396e7] focus:shadow-[0_0_0_3px_#4869ee3f] pl-2 rounded"
+                  className={`inputControlled ${
+                    errors.password ? "error" : "noError"
+                  }`}
                   onFocus={changeStatePasswordField}
                   type="password"
                   id="password"
@@ -346,6 +185,7 @@ export default function Login() {
               >
                 Créez-en un
               </Link>
+              .
             </span>
           </div>
         </div>

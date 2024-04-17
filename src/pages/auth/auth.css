@@ -1,0 +1,38 @@
+.inputSubmitToLogin {
+  @apply items-center shadow-[0_1px_2px_rgba(36,57,141,0.4)] rounded leading-[1.6] text-black cursor-pointer text-[0.9em] brightness-100 whitespace-nowrap px-4 py-[9px] border-[none] hover:brightness-[1.2] w-full text-lg;
+  transition: all 0.3s;
+  background: linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0) 0,
+      rgba(255, 255, 255, 0.2) 100%
+    )
+    #fff;
+}
+
+.inputControlled {
+  @apply w-full h-[50px] bg-transparent text-white border border-solid focus:outline-none pl-2 rounded;
+}
+
+.inputControlled.error {
+  @apply focus:border-[#e75353] focus:shadow-[0_0_0_3px_#4869ee3f] border-[#f18a9b];
+}
+
+.inputControlled.noError {
+  @apply focus:border-[#5396e7] focus:shadow-[0_0_0_3px_#4869ee3f] border-[#AB8AF1];
+}
+
+.labelControlled {
+  @apply absolute bg-[#371577] px-2 pointer-events-none;
+}
+
+.labelControlled.focus {
+  @apply -translate-x-1 -translate-y-2/4 left-4 top-0 text-[#CFBEEF];
+}
+
+.labelControlled.noFocus {
+  @apply -translate-x-2 -translate-y-2/4 left-4 top-2/4 text-[#9E6AFF];
+}
+
+form select option {
+  @apply text-gray-900;
+}

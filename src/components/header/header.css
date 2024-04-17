@@ -1,30 +1,31 @@
 header {
-  @apply font-semibold text-lg border-b flex justify-start items-center px-2 md:px-4 lg:px-6 py-8;
+  @apply font-semibold text-lg border-b flex flex-col md:flex-row justify-between items-center px-2 md:px-4 lg:px-6 py-8;
   .logo {
     @apply mr-3 lg:mr-8;
     a img {
-      @apply w-80;
+      @apply w-36;
     }
   }
 
   nav.first {
-    @apply flex justify-between md:items-center items-end justify-end w-full;
+    @apply justify-between md:items-center items-end w-full;
 
     ul {
-      @apply flex md:justify-around w-auto md:items-center gap-3 md:gap-4 lg:gap-8;
+      @apply flex md:justify-start max-[767px]:flex-col max-[767px]:mt-4 w-auto md:items-center gap-3 md:gap-4 lg:gap-8 max-[767px]:gap-0;
       li {
+        @apply max-[767px]:px-4;
         a {
-          @apply font-semibold text-lg hover:text-purple-500;
+          @apply font-semibold text-lg hover:text-purple-500 max-[767px]:w-full max-[767px]:block max-[767px]:px-4 max-[767px]:py-2 text-gray-700 md:hover:border-b-4 md:hover:border-purple-400;
         }
         a.active {
-          @apply text-purple-900;
+          @apply text-purple-900 max-[767px]:bg-purple-200 max-[767px]:border-l-4 border-purple-600 max-[767px]:text-purple-600 md:border-b-4;
         }
       }
     }
   }
 
   nav.second {
-    @apply w-full flex justify-end;
+    @apply w-full hidden md:flex justify-end;
     ul {
       @apply flex gap-0 sm:gap-2 md:gap-1 lg:gap-6 justify-center items-center self-center;
       li {
