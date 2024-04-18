@@ -111,8 +111,8 @@ export default function Login() {
                 </p>
               )}
             </div>
-            {/* Champ du password */}
 
+            {/* Champ du password */}
             <div className="relative mb-8 passwordField">
               <div className="flex flex-col gap-1 relative">
                 <label

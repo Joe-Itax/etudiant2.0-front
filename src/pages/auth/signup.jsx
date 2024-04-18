@@ -45,39 +45,45 @@ export default function SignUp() {
     // reset();
   };
 
-  const [isFocusLastnameFiel, setIsFocusLastnameFiel] = useState(false);
-  const [isFocusFirstnameFiel, setIsFocusFirstnameFiel] = useState(false);
-  const [isFocusEmailFiel, setIsFocusEmailFiel] = useState(false);
-  const [isFocusPasswordFiel, setIsFocusPasswordFiel] = useState(false);
-  /*const [isFocusUniversityFiel, setIsFocusUniversityFiel] = useState(false);*/
-
-  //Firstname
-  const changeStateFirstnameField = () => {
-    setIsFocusFirstnameFiel(true);
+  const [isFocusField, setIsFocusField] = useState({
+    firstname: false,
+    lastname: false,
+    email: false,
+    password: false,
+  });
+  const changeStateField = (fieldName, value) => {
+    setIsFocusField({
+      ...isFocusField,
+      [fieldName]: value,
+    });
   };
-  const changeStateFirstnameFieldFalse = () => {
-    setIsFocusFirstnameFiel(false);
+  //Firstname
+  const handleFocusFirstnameField = () => {
+    changeStateField("firstname", true);
+  };
+  const handleBlurFirstnameField = () => {
+    changeStateField("firstname", false);
   };
   //Lastname
-  const changeStateLastnameField = () => {
-    setIsFocusLastnameFiel(true);
+  const handleFocusLastnameField = () => {
+    changeStateField("lastname", true);
   };
-  const changeStateLastnameFieldFalse = () => {
-    setIsFocusLastnameFiel(false);
+  const handleBlurLastnameField = () => {
+    changeStateField("lastname", false);
   };
   //Email
-  const changeStateEmailField = () => {
-    setIsFocusEmailFiel(true);
+  const handleFocusEmailField = () => {
+    changeStateField("email", true);
   };
-  const changeStateEmailFieldFalse = () => {
-    setIsFocusEmailFiel(false);
+  const handleBlurEmailField = () => {
+    changeStateField("email", false);
   };
   //Password
-  const changeStatePasswordField = () => {
-    setIsFocusPasswordFiel(true);
+  const handleFocusPasswordField = () => {
+    changeStateField("password", true);
   };
-  const changeStatePasswordFieldFalse = () => {
-    setIsFocusPasswordFiel(false);
+  const handleBlurPasswordField = () => {
+    changeStateField("password", false);
   };
   //University
   /*const changeStateUniversityField = () => {
@@ -98,27 +104,27 @@ export default function SignUp() {
             className="mt-4 w-full"
             autoComplete="off"
           >
-            {/* Champ du Nom */}
+            {/* Champ du PreNom|firstname */}
             <div className="relative mb-8 firstField">
               <div className="flex flex-col gap-1 relative">
                 <label
                   htmlFor="firstname"
                   className={`labelControlled ${
-                    isFocusFirstnameFiel ? "focus" : "noFocus"
+                    isFocusField.firstname ? "focus" : "noFocus"
                   }`}
                 >
-                  Nom *
+                  Prenom *
                 </label>
                 <input
                   autoComplete="nope123"
                   className={`inputControlled ${
                     errors.firstname ? "error" : "noError"
                   }`}
-                  onFocus={changeStateFirstnameField}
+                  onFocus={handleFocusFirstnameField}
                   type="text"
                   id="firstname"
                   {...register("firstname", {
-                    required: "Veuillez indiquer votre Nom.",
+                    required: "Veuillez indiquer votre prenom.",
                     minLength: {
                       value: 3,
                       message: `La longueure minimum du nom est de 3`,
@@ -127,7 +133,7 @@ export default function SignUp() {
                   onBlur={(e) => {
                     const firstnameValue = getValues("firstname");
                     if (!firstnameValue) {
-                      changeStateFirstnameFieldFalse();
+                      handleBlurFirstnameField();
                     }
                     // Appeler la fonction onBlur fournie par react-hook-form pour conserver sa fonctionnalité
                     register("firstname").onBlur(e);
@@ -141,26 +147,26 @@ export default function SignUp() {
               )}
             </div>
 
-            {/* Champ du prénom */}
+            {/* Champ du nom|lastname */}
             <div className="relative mb-8 lastnameField">
               <div className="flex flex-col gap-1 relative">
                 <label
                   htmlFor="lastname"
                   className={`labelControlled ${
-                    isFocusLastnameFiel ? "focus" : "noFocus"
+                    isFocusField.lastname ? "focus" : "noFocus"
                   }`}
                 >
-                  Prénom *
+                  Nom *
                 </label>
                 <input
                   className={`inputControlled ${
                     errors.lastname ? "error" : "noError"
                   }`}
-                  onFocus={changeStateLastnameField}
+                  onFocus={handleFocusLastnameField}
                   type="text"
                   id="lastname"
                   {...register("lastname", {
-                    required: "Veuillez indiquer votre Prénom.",
+                    required: "Veuillez indiquer votre nom.",
                     minLength: {
                       value: 3,
                       message: `La longueure minimum du prénom est de 3`,
@@ -169,7 +175,7 @@ export default function SignUp() {
                   onBlur={(e) => {
                     const lastnameValue = getValues("lastname");
                     if (!lastnameValue) {
-                      changeStateLastnameFieldFalse();
+                      handleBlurLastnameField();
                     }
                     // Appeler la fonction onBlur fournie par react-hook-form pour conserver sa fonctionnalité
                     register("lastname").onBlur(e);
@@ -189,7 +195,7 @@ export default function SignUp() {
                 <label
                   htmlFor="email"
                   className={`labelControlled ${
-                    isFocusEmailFiel ? "focus" : "noFocus"
+                    isFocusField.email ? "focus" : "noFocus"
                   }`}
                 >
                   Adresse e-mail *
@@ -199,7 +205,7 @@ export default function SignUp() {
                   className={`inputControlled ${
                     errors.email ? "error" : "noError"
                   }`}
-                  onFocus={changeStateEmailField}
+                  onFocus={handleFocusEmailField}
                   type="email"
                   id="email"
                   {...register("email", {
@@ -212,7 +218,7 @@ export default function SignUp() {
                   onBlur={(e) => {
                     const emailValue = getValues("email");
                     if (!emailValue) {
-                      changeStateEmailFieldFalse();
+                      handleBlurEmailField();
                     }
                     // Appeler la fonction onBlur fournie par react-hook-form pour conserver sa fonctionnalité
                     register("email").onBlur(e);
@@ -232,7 +238,7 @@ export default function SignUp() {
                 <label
                   htmlFor="password"
                   className={`labelControlled ${
-                    isFocusPasswordFiel ? "focus" : "noFocus"
+                    isFocusField.password ? "focus" : "noFocus"
                   }`}
                 >
                   Mot de passe *
@@ -241,7 +247,7 @@ export default function SignUp() {
                   className={`inputControlled ${
                     errors.password ? "error" : "noError"
                   }`}
-                  onFocus={changeStatePasswordField}
+                  onFocus={handleFocusPasswordField}
                   type="password"
                   id="password"
                   {...register("password", {
@@ -269,7 +275,7 @@ export default function SignUp() {
                   onBlur={(e) => {
                     const emailValue = getValues("password");
                     if (!emailValue) {
-                      changeStatePasswordFieldFalse();
+                      handleBlurPasswordField();
                     }
                     // Appeler la fonction onBlur fournie par react-hook-form pour conserver sa fonctionnalité
                     register("password").onBlur(e);
