@@ -6,6 +6,7 @@ import Ressources from "./pages/ressources";
 import Contact from "./pages/contact";
 import Layout from "./components/layout";
 import Profil from "./pages/profil";
+import ContextProvider from "./components/context-provider/context-provider";
 // console.log("import.meta.env: ", import.meta.env);
 
 const routes = createBrowserRouter([
@@ -44,7 +45,9 @@ const routes = createBrowserRouter([
 function App() {
   return (
     <>
-      <RouterProvider router={routes} />
+      <ContextProvider>
+        <RouterProvider router={routes} />
+      </ContextProvider>
     </>
   );
 }

@@ -1,3 +1,6 @@
-.profil-main-container {
-  /* @apply bg-red-300; */
+.profil-main-container input[type="text"],
+.profil-main-container input[type="email"],
+.profil-main-container input[type="password"],
+.profil-main-container select {
+  @apply w-full md:w-64;
 }

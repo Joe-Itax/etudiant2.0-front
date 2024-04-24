@@ -1,11 +1,19 @@
-import { useState } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import amico from "/assets/amico.svg";
 import "./auth.css";
+import authStatusContext from "../../contexts/auth.context";
+import CustomizedSnackbars from "../../components/notif";
 
 export default function SignUp() {
+  const [messageNotif, setMessageNotif] = useState("");
+  const [severityNotif, setSeverityNotif] = useState("");
+  const [openNotif, setOpenNotif] = useState(false);
+  const handleSubmitOpenNotif = () => {
+    setOpenNotif(true);
+  };
   const {
     register,
     handleSubmit,
@@ -14,13 +22,23 @@ export default function SignUp() {
     // reset,
   } = useForm();
 
+  const navigate = useNavigate();
+
+  const { isAuthenticated, setIsAuthenticated } = useContext(authStatusContext);
+
+  // console.log("isAuthenticated: ", isAuthenticated);
+
+  useEffect(() => {
+    /*if (isAuthenticated) {
+      navigate("/profil");
+    }*/
+  }, [isAuthenticated, navigate]);
   const onSubmit = async (dataFromUser, event) => {
     dataFromUser["universityId"] = dataFromUser["university"];
     delete dataFromUser["university"];
     if (dataFromUser.universityId === "") {
       dataFromUser.universityId = null;
     }
-    console.log("data: ", dataFromUser);
     event.preventDefault();
     try {
       const res = await axios.post(
@@ -35,8 +53,23 @@ export default function SignUp() {
       );
       // const dataa = await res.json();
       console.log(res);
+      setMessageNotif(res.data.message);
+      setSeverityNotif("success");
+      handleSubmitOpenNotif();
+      setIsAuthenticated(res.data.isLoggedIn);
     } catch (error) {
       console.error("Error: ", error);
+      if (error?.response?.status === 404 || error?.response?.status === 400) {
+        setMessageNotif(error.response.data.message);
+        setSeverityNotif("error");
+        handleSubmitOpenNotif();
+      }
+
+      if (error.code === "ERR_NETWORK") {
+        setMessageNotif("Serveur hors service.");
+        setSeverityNotif("error");
+        handleSubmitOpenNotif();
+      }
     }
     // if (event.currentTarget || event.target) {
     //   event.currentTarget.reset();
@@ -92,8 +125,22 @@ export default function SignUp() {
   const changeStateUniversityFieldFalse = () => {
     setIsFocusUniversityFiel(false);
   };*/
+  useEffect(() => {
+    setTimeout(function () {
+      if (isAuthenticated) {
+        navigate("/profil");
+      }
+    }, 3000);
+  }, [isAuthenticated, navigate]);
+
   return (
     <div className="w-full h-auto mt-20 flex justify-center items-center relative min-[860px]:px-20 min-[400px]:px-10 px-4">
+      <CustomizedSnackbars
+        open={openNotif}
+        message={messageNotif}
+        setOpen={setOpenNotif}
+        severity={severityNotif}
+      />
       <div className="bg-[#371577] flex justify-center min-[860px]:gap-16 gap-10 p-4 py-10 rounded-md mb-20 max-w-[70rem] w-full">
         <div className="form flex flex-col items-start justify-around md:w-[50%] w-[100%] min-[860px]:max-w-[25rem] max-[768px]:px-2 max-[550px]:px-2">
           <h1 className="text-[2rem] sm:text-4xl font-bold mb-5 text-left text-white">
