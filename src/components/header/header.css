@@ -63,9 +63,9 @@ header nav.second {
 header nav.second ul {
   @apply flex gap-0 sm:gap-2 md:gap-1 lg:gap-6 justify-center items-center self-center;
 }
-header nav.second ul li a.login {
+/* header nav.second ul li a.login {
   @apply rounded-md border border-[#5E38A6] text-white px-4 py-1 bg-purple-700 hover:bg-purple-800;
 }
 header nav.second ul li a.signup {
   @apply border rounded-md px-4 py-1 border-[#5E38A6] text-[#5E38A6] hover:bg-slate-100;
-}
+} */

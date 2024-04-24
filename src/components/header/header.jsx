@@ -11,6 +11,8 @@ import { CircularProgress } from "@mui/material";
 import currentUserContext from "../../contexts/current-user.context";
 import authStatusContext from "../../contexts/auth.context";
 import axios from "axios";
+import PrimaryBouton from "../bouttons/primary-button";
+import SecondaryBouton from "../bouttons/secondary-button";
 
 import OpenMobileMenu from "./navbar-mobile/navbar-mobile";
 
@@ -261,13 +263,13 @@ export default function Header() {
         {!isAuthenticated ? (
           <ul className="">
             <li>
-              <Link to={"/signup"} className="signup">
-                S&apos;enregistrer
+              <Link to={`/signup`}>
+                <SecondaryBouton>Créer un compte</SecondaryBouton>
               </Link>
             </li>
             <li>
-              <Link to={"/login"} className="login">
-                Se connecter
+              <Link to={`/login`}>
+                <PrimaryBouton>Se connecter</PrimaryBouton>
               </Link>
             </li>
           </ul>
