@@ -11,8 +11,7 @@ import { CircularProgress } from "@mui/material";
 import currentUserContext from "../../contexts/current-user.context";
 import authStatusContext from "../../contexts/auth.context";
 import axios from "axios";
-import PrimaryBouton from "../bouttons/primary-button";
-import SecondaryBouton from "../bouttons/secondary-button";
+import CustomBouton from "../bouttons/custom-button";
 
 import OpenMobileMenu from "./navbar-mobile/navbar-mobile";
 
@@ -48,7 +47,7 @@ export default function Header() {
           withCredentials: true,
         }
       );
-      console.log(logoutRes);
+      // console.log(logoutRes);
       if (logoutRes.status === 200) {
         setIsAuthenticated(false);
         setCurrentUser({});
@@ -264,12 +263,12 @@ export default function Header() {
           <ul className="">
             <li>
               <Link to={`/signup`}>
-                <SecondaryBouton>Créer un compte</SecondaryBouton>
+                <CustomBouton variant={"primary"}>Créer un compte</CustomBouton>
               </Link>
             </li>
             <li>
               <Link to={`/login`}>
-                <PrimaryBouton>Se connecter</PrimaryBouton>
+                <CustomBouton variant={"secondary"}>Se connecter</CustomBouton>
               </Link>
             </li>
           </ul>

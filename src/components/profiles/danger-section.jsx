@@ -26,7 +26,7 @@ export default function DangerSection() {
             type="button"
             onClick={submitDeleteAccountReq}
             value="Supprimer mon compte"
-            className="inputSubmitToLogin bg-[red] hover:bg-red-800 text-white"
+            className="inputSubmitToLogindanger bg-[red] hover:bg-red-800 text-white"
           />
         </div>
       </section>

@@ -75,7 +75,7 @@ export default function Profil() {
 
   if (isAuthenticated) {
     return (
-      <div className="profil-main-container px-16 max-[500px]:px-8 mt-4">
+      <div className="profile-page profil-main-container px-16 max-[500px]:px-8 mt-4">
         <CustomizedSnackbars
           open={openNotif}
           message={messageNotif}

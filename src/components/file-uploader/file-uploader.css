@@ -1,0 +1,61 @@
+.custom-uploader {
+  @apply flex w-full md:w-[70rem] px-8 max-[560px]:px-0 sm:px-16;
+}
+
+.custom-uploader .MuiStepper-root.MuiStepper-vertical {
+  @apply w-full;
+}
+
+.custom-uploader
+  .MuiStepper-root.MuiStepper-vertical
+  .MuiCollapse-entered.MuiStepContent-transition {
+  @apply w-full;
+}
+
+.custom-uploader .MuiCollapse-wrapperInner.MuiCollapse-vertical {
+  @apply flex flex-col gap-4;
+}
+
+.custom-uploader .MuiCollapse-wrapperInner.MuiCollapse-vertical button {
+  @apply self-end;
+}
+
+.custom-uploader .MuiStack-root.css-fedopx-MuiStack-root {
+  @apply w-full;
+}
+
+.custom-uploader .step-details .form-step2 {
+  @apply flex flex-col gap-4;
+}
+
+.custom-uploader .step-details {
+  @apply text-center;
+}
+
+.custom-uploader .step-details h3 {
+  @apply min-[580px]:text-xl;
+}
+
+.custom-uploader .step-details .form-step2 .main-box-of-label-and-input {
+  @apply flex md:gap-8 gap-2 flex-col md:flex-row;
+}
+
+.custom-uploader .step-details .form-step2 .label-box {
+  @apply md:w-48 w-32;
+}
+
+.custom-uploader .step-details .form-step2 .input-box {
+  @apply flex flex-col w-full lg:w-[40rem];
+}
+
+.custom-uploader .step-auth .step-auth-content {
+  @apply m-0 p-0;
+}
+
+.custom-uploader .step-auth .step-auth-content .step-auth-content-details {
+  @apply flex flex-col gap-5 justify-center items-center;
+}
+
+.custom-uploader .step-auth .step-auth-content .step-auth-content-details h2 {
+  @apply font-semibold text-2xl;
+}

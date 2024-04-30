@@ -1,31 +1,46 @@
 import { Link } from "react-router-dom";
-import PrimaryBouton from "../components/bouttons/primary-button";
-import SecondaryBouton from "../components/bouttons/secondary-button";
-
+import HeroSection from "../components/home/hero-section";
+import { Button } from "@mui/material";
+import { CloudUpload } from "@mui/icons-material";
 export default function Home() {
   return (
     <div className="home-page">
-      <section className="hero w-full min-[1150px]:w-2/3 flex flex-col gap-8 text-center sm:text-start">
-        <h1 className="text-4xl min-[450px]:text-5xl font-bold">
-          Connectez-vous, collaborez, réussissez avec Etudiant 2.0
-        </h1>
-        <div className="slogan">
-          <h2 className="text-2xl min-[450px]:text-3xl font-semibold">
-            Etudiant 2.0 : Apprenez au-delà des frontières de votre université.
-          </h2>
-        </div>
-        <div className="flex flex-wrap sm:justify-start justify-center sm:flex-nowrap items-center gap-4 max-[640px]:mt-8">
-          <div className="sm:my-8">
-            <Link to={`/ressources`}>
-              <PrimaryBouton>Découvrez les ressources</PrimaryBouton>
-            </Link>
+      <HeroSection />
+
+      <section className="upload-ressources">
+        <h2 className="font-bold text-3xl text-blue-700">
+          Partagez vos connaissances et aidez vos pairs!
+        </h2>
+        <div className="my-8 text-xl w-full lg:w-[50rem] self-center">
+          <div>
+            <span>
+              Vous avez des livres, des notes de cours, des exercices, des
+              interros, des examens corrigés ou non, ou d&apos;autres ressources
+              éducatives à partager?{" "}
+            </span>
           </div>
           <div>
-            <Link to={`/signup`}>
-              <SecondaryBouton>Inscrivez-vous gratuitement</SecondaryBouton>
-            </Link>
+            <span>
+              Contribuez à la communauté Etudiant 2.0 en soumettant vos
+              ressources dès aujourd&apos;hui!
+            </span>
+          </div>
+          <div>
+            <span className="font-semibold">
+              Vos documents aideront d&apos;autres étudiants à apprendre et à
+              réussir.
+            </span>
           </div>
         </div>
+        <Link to={"/upload"} className="self-center">
+          <Button
+            startIcon={<CloudUpload />}
+            variant="contained"
+            className="button-mui"
+          >
+            Partager des documents
+          </Button>
+        </Link>
       </section>
     </div>
   );

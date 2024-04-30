@@ -2,10 +2,12 @@ import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import axiosInstance from "../../utils/axios-instance";
 import amico from "/assets/amico.svg";
 import "./auth.css";
 import authStatusContext from "../../contexts/auth.context";
 import CustomizedSnackbars from "../../components/notif";
+import currentUserContext from "../../contexts/current-user.context";
 
 export default function SignUp() {
   const [messageNotif, setMessageNotif] = useState("");
@@ -25,6 +27,7 @@ export default function SignUp() {
   const navigate = useNavigate();
 
   const { isAuthenticated, setIsAuthenticated } = useContext(authStatusContext);
+  const { setCurrentUser } = useContext(currentUserContext);
 
   // console.log("isAuthenticated: ", isAuthenticated);
 
@@ -34,29 +37,21 @@ export default function SignUp() {
     }*/
   }, [isAuthenticated, navigate]);
   const onSubmit = async (dataFromUser, event) => {
-    dataFromUser["universityId"] = dataFromUser["university"];
-    delete dataFromUser["university"];
-    if (dataFromUser.universityId === "") {
-      dataFromUser.universityId = null;
-    }
     event.preventDefault();
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/auth/signup`,
-        dataFromUser,
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          withCredentials: true, // Activer l'envoi des cookies avec la requête
-        }
-      );
+      const res = await axiosInstance.post(`/api/auth/signup`, dataFromUser, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+        withCredentials: true, // Activer l'envoi des cookies avec la requête
+      });
       // const dataa = await res.json();
-      console.log(res);
+      // console.log(res);
       setMessageNotif(res.data.message);
       setSeverityNotif("success");
       handleSubmitOpenNotif();
       setIsAuthenticated(res.data.isLoggedIn);
+      setCurrentUser(res.data.user);
     } catch (error) {
       console.error("Error: ", error);
       if (error?.response?.status === 404 || error?.response?.status === 400) {
@@ -118,23 +113,16 @@ export default function SignUp() {
   const handleBlurPasswordField = () => {
     changeStateField("password", false);
   };
-  //University
-  /*const changeStateUniversityField = () => {
-    setIsFocusUniversityFiel(true);
-  };
-  const changeStateUniversityFieldFalse = () => {
-    setIsFocusUniversityFiel(false);
-  };*/
   useEffect(() => {
     setTimeout(function () {
       if (isAuthenticated) {
         navigate("/profil");
       }
-    }, 3000);
+    }, 2000);
   }, [isAuthenticated, navigate]);
 
   return (
-    <div className="w-full h-auto mt-20 flex justify-center items-center relative min-[860px]:px-20 min-[400px]:px-10 px-4">
+    <div className="w-full h-auto mt-20 flex justify-center items-center relative min-[860px]:px-20 min-[400px]:px-10 px-4 signup-page">
       <CustomizedSnackbars
         open={openNotif}
         message={messageNotif}
@@ -336,30 +324,6 @@ export default function SignUp() {
               )}
             </div>
 
-            {/* Champ de l'université */}
-            <div className="relative mb-8 universityField">
-              <div className="flex items-center gap-1 relative">
-                <label htmlFor="university" className={`text-white`}>
-                  Université:
-                </label>
-                <select
-                  name="university"
-                  id="university"
-                  className="inputControlled focus:border-[#5396e7] focus:shadow-[0_0_0_3px_#4869ee3f] border-[#AB8AF1]"
-                  {...register("university")}
-                >
-                  <option value="" className="">
-                    -- Veuillez choisir votre université --
-                  </option>
-                  <option value="UNIKIN">UNIKIN</option>
-                </select>
-              </div>
-              {errors.password?.message && (
-                <p className="text-red-500 text-[0.8rem]">
-                  {errors.university?.message}
-                </p>
-              )}
-            </div>
             <div className="font-bold">
               <input
                 type="submit"

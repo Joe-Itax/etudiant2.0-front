@@ -4,6 +4,9 @@ import Login from "./pages/auth/login";
 import SignUp from "./pages/auth/signup";
 import Ressources from "./pages/ressources";
 import Contact from "./pages/contact";
+import Upload from "./pages/upload";
+import UploadSuccess from "./pages/upload-success";
+import ActiveAccount from "./pages/active-account";
 import Layout from "./components/layout";
 import Profil from "./pages/profil";
 import ContextProvider from "./components/context-provider/context-provider";
@@ -31,6 +34,10 @@ const routes = createBrowserRouter([
         element: <Profil />,
       },
       {
+        path: "/upload/success",
+        element: <UploadSuccess />,
+      },
+      {
         path: "/login",
         element: <Login />,
       },
@@ -40,8 +47,15 @@ const routes = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/upload",
+    element: <Upload />,
+  },
+  {
+    path: "/account/activate",
+    element: <ActiveAccount />,
+  },
 ]);
-
 function App() {
   return (
     <>

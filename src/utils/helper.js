@@ -63,4 +63,22 @@ const formatTimestamp = (timestamp) => {
   return `${relativeTime}`;
 };
 
+/*
+function formatFileSize(sizeInBytes) {
+  const units = ["B", "KB", "MB", "GB", "TB"];
+  let size = sizeInBytes;
+  let unitIndex = 0;
+
+  // Diviser par 1024 jusqu'à trouver la bonne unité
+  while (size >= 1024 && unitIndex < units.length - 1) {
+    size /= 1024;
+    unitIndex++;
+  }
+
+  // Formater pour obtenir 2 décimales
+  const formattedSize = size.toFixed(2) + " " + units[unitIndex];
+  return formattedSize;
+}
+*/
+
 export { formatTimestamp, checkAuthStatus };

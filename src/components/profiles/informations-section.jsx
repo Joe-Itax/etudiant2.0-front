@@ -46,7 +46,7 @@ export default function InformationsSection() {
           withCredentials: true, // Activer l'envoi des cookies avec la requête
         }
       );
-      console.log(res);
+      // console.log(res);
       if (res.status === 200) {
         setMessageNotif("Informations modifiées avec succes !!!");
         setSeverityNotif("success");
@@ -69,11 +69,14 @@ export default function InformationsSection() {
           setIsAuthenticated(false);
           navigate("/login");
         }, 5000);
-      }
-      if (error.response.status === 400) {
+      } else if (error.response.status === 400) {
         setMessageNotif(
           "Un autre utilisateur est déjà enregistré avec cet email."
         );
+        setSeverityNotif("error");
+        handleSubmitOpenNotif();
+      } else {
+        setMessageNotif(error.code);
         setSeverityNotif("error");
         handleSubmitOpenNotif();
       }

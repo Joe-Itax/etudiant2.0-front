@@ -1,7 +1,7 @@
 import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+import axiosInstance from "../../utils/axios-instance";
 import amico from "/assets/amico.svg";
 import "./auth.css";
 import { CircularProgress } from "@mui/material";
@@ -9,7 +9,7 @@ import { CircularProgress } from "@mui/material";
 import authStatusContext from "../../contexts/auth.context";
 
 import CustomizedSnackbars from "../../components/notif";
-// import currentUserContext from "../../contexts/current-user.context";
+import currentUserContext from "../../contexts/current-user.context";
 export default function Login() {
   const [messageNotif, setMessageNotif] = useState("");
   const [severityNotif, setSeverityNotif] = useState("");
@@ -28,7 +28,7 @@ export default function Login() {
   const navigate = useNavigate();
 
   const { isAuthenticated, setIsAuthenticated } = useContext(authStatusContext);
-  // const { setCurrentUser } = useContext(currentUserContext);
+  const { setCurrentUser } = useContext(currentUserContext);
 
   // console.log("isAuthenticated: ", isAuthenticated);
 
@@ -37,22 +37,18 @@ export default function Login() {
     // console.log("data: ", dataFromUser);
     event.preventDefault();
     try {
-      const res = await axios.post(
-        `${import.meta.env.VITE_API_BASE_URL}/api/auth/login`,
-        dataFromUser,
-        {
-          headers: {
-            "Content-Type": "application/x-www-form-urlencoded",
-          },
-          withCredentials: true, // Activer l'envoi des cookies avec la requête
-        }
-      );
+      const res = await axiosInstance.post(`/api/auth/login`, dataFromUser, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
       // console.log("res: ", res); //joeitax3@gmail.com
       // setIsAuthenticated(res?.data?.isLoggedIn);
       setMessageNotif(res.data.message);
       setSeverityNotif("success");
       handleSubmitOpenNotif();
       setIsAuthenticated(res.data.isLoggedIn);
+      setCurrentUser(res.data.user);
     } catch (error) {
       // console.error("Error: ", error);
       if (error?.response?.status === 404 || error?.response?.status === 400) {
@@ -79,7 +75,7 @@ export default function Login() {
       if (isAuthenticated) {
         navigate("/profil");
       }
-    }, 3000);
+    }, 2000);
   }, [isAuthenticated, navigate]);
 
   const [isFocusEmailFiel, setIsFocusEmailFiel] = useState(false);
@@ -99,7 +95,7 @@ export default function Login() {
   };
 
   return (
-    <div>
+    <div className="login-page">
       <CustomizedSnackbars
         open={openNotif}
         message={messageNotif}
@@ -107,7 +103,7 @@ export default function Login() {
         severity={severityNotif}
       />
       {isAuthenticated ? (
-        <div className="w-full h-full flex justify-center items-center">
+        <div className="w-full mt-40 h-full flex justify-center items-center">
           <CircularProgress />
         </div>
       ) : (
