@@ -6,9 +6,8 @@ import Ressources from "./pages/ressources";
 import Contact from "./pages/contact";
 import Upload from "./pages/upload";
 import UploadSuccess from "./pages/upload-success";
-import ActiveAccount from "./pages/active-account";
-import Layout from "./components/layout";
 import Profil from "./pages/profil";
+import Layout from "./components/layout";
 import ContextProvider from "./components/context-provider/context-provider";
 // console.log("import.meta.env: ", import.meta.env);
 
@@ -51,12 +50,15 @@ const routes = createBrowserRouter([
     path: "/upload",
     element: <Upload />,
   },
-  {
-    path: "/account/activate",
-    element: <ActiveAccount />,
-  },
+  // {
+  //   path: "/account/activate",
+  //   element: <ActiveAccount />,
+  // },
 ]);
 function App() {
+  window.scrollTo({
+    top: 0,
+  });
   return (
     <>
       <ContextProvider>

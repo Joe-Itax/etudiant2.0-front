@@ -1,12 +1,11 @@
 import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
 import axiosInstance from "../../utils/axios-instance";
 import amico from "/assets/amico.svg";
 import "./auth.css";
 import authStatusContext from "../../contexts/auth.context";
-import CustomizedSnackbars from "../../components/notif";
+import CustomizedSnackbars from "../../components/feedback/notif";
 import currentUserContext from "../../contexts/current-user.context";
 
 export default function SignUp() {

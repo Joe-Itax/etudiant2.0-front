@@ -4,6 +4,9 @@ import FileUploader from "../components/file-uploader/file-uploader";
 import logo from "/assets/Etudiant-20.svg";
 
 export default function Upload() {
+  window.scrollTo({
+    top: 0,
+  });
   return (
     <div>
       <div className="flex flex-col items-center justify-center py-16 border-b bg-blue-50">

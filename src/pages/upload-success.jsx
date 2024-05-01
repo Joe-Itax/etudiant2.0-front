@@ -3,6 +3,9 @@ import { Button } from "@mui/material";
 import { CloudUpload } from "@mui/icons-material";
 
 export default function UploadSuccess() {
+  window.scrollTo({
+    top: 0,
+  });
   return (
     <div className="upload-success-page">
       <div className="flex flex-col justify-center items-center mt-16 px-8">

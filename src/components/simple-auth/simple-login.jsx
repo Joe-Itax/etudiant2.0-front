@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
 // import { useNavigate } from "react-router-dom";
-import CustomizedSnackbars from "../notif";
+import CustomizedSnackbars from "../feedback/notif";
 import authStatusContext from "../../contexts/auth.context";
 import currentUserContext from "../../contexts/current-user.context";
 import axiosInstance from "../../utils/axios-instance";

@@ -2,7 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useForm } from "react-hook-form";
 import { RiLock2Fill } from "@remixicon/react";
-import CustomizedSnackbars from "../notif";
+import CustomizedSnackbars from "../feedback/notif";
 
 export default function PasswordSection() {
   const {

@@ -8,7 +8,7 @@ import { CircularProgress } from "@mui/material";
 
 import authStatusContext from "../../contexts/auth.context";
 
-import CustomizedSnackbars from "../../components/notif";
+import CustomizedSnackbars from "../../components/feedback/notif";
 import currentUserContext from "../../contexts/current-user.context";
 export default function Login() {
   const [messageNotif, setMessageNotif] = useState("");
@@ -75,7 +75,7 @@ export default function Login() {
       if (isAuthenticated) {
         navigate("/profil");
       }
-    }, 2000);
+    });
   }, [isAuthenticated, navigate]);
 
   const [isFocusEmailFiel, setIsFocusEmailFiel] = useState(false);

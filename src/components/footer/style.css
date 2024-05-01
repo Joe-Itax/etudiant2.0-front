@@ -1,0 +1,23 @@
+footer {
+  @apply flex flex-col justify-center items-center border-t p-12 bg-cyan-50;
+}
+
+footer .logo-box {
+  @apply px-4 py-8;
+}
+
+footer .menu-box ul {
+  @apply flex flex-wrap justify-center items-center gap-4 sm:gap-8 md:gap-12 py-8 text-[.98rem] text-gray-800 font-medium;
+}
+
+footer .links-box {
+  @apply flex gap-8 text-gray-600 mb-8;
+}
+
+footer .menu-box a {
+  @apply hover:text-violet-500;
+}
+
+footer .copy-box {
+  @apply text-gray-600 text-sm text-center;
+}

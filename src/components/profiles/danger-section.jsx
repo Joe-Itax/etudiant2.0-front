@@ -1,8 +1,20 @@
+import { useState } from "react";
+import AlertDialog from "../feedback/alert-dialog";
 import { RiDeleteBin5Fill } from "@remixicon/react";
 
 export default function DangerSection() {
-  const submitDeleteAccountReq = async () => {
+  const [open, setOpen] = useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleSubmitDeleteAccountReq = async () => {
     alert(`Compte supprimer avec succès !`);
+    handleClose();
   };
   return (
     <>
@@ -24,11 +36,16 @@ export default function DangerSection() {
         <div className="font-bold self-end">
           <input
             type="button"
-            onClick={submitDeleteAccountReq}
+            onClick={handleClickOpen}
             value="Supprimer mon compte"
             className="inputSubmitToLogindanger bg-[red] hover:bg-red-800 text-white"
           />
         </div>
+        <AlertDialog
+          handleSubmitDeleteAccountReq={handleSubmitDeleteAccountReq}
+          open={open}
+          handleClose={handleClose}
+        />
       </section>
     </>
   );

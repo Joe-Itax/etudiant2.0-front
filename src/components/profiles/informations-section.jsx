@@ -1,27 +1,43 @@
 import { useState, useContext } from "react";
-import axios from "axios";
+import axiosInstance from "../../utils/axios-instance";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { RiUserFill } from "@remixicon/react";
 import currentUserContext from "../../contexts/current-user.context";
 import authStatusContext from "../../contexts/auth.context";
-import CustomizedSnackbars from "../notif";
-import { useNavigate } from "react-router-dom";
+import universityContext from "../../contexts/university.context";
+import CustomizedSnackbars from "../feedback/notif";
+import InputAutocomplete from "../inputs/autocomplete";
+
 export default function InformationsSection() {
   const { currentUser, setCurrentUser } = useContext(currentUserContext);
   const { setIsAuthenticated } = useContext(authStatusContext);
+  const { university } = useContext(universityContext);
+
+  // console.log("currentUser: ", currentUser);
+  // console.log("university: ", university);
+
+  const universityOfCurrentUser = university.find(
+    (univ) => univ.id === currentUser.universityId
+  );
+
+  // console.log("universityOfCurrentUser: ", universityOfCurrentUser);
   const {
     register,
     handleSubmit,
     formState: { errors },
     getValues,
+    setValue,
+    watch,
   } = useForm({
     defaultValues: {
       email: `${currentUser?.email}`,
       firstname: `${currentUser?.firstname}`,
       lastname: `${currentUser?.lastname}`,
-      university: ``,
+      university: universityOfCurrentUser ? universityOfCurrentUser.title : "",
     },
   });
+  const currentUniversity = watch("university");
 
   const [messageNotif, setMessageNotif] = useState("");
   const [severityNotif, setSeverityNotif] = useState("");
@@ -33,20 +49,19 @@ export default function InformationsSection() {
   const navigate = useNavigate();
   // handleSubmitOpenNotif();
   const onSubmitNewInfos = async (dataFromUser, event) => {
-    // console.log("data: ", dataFromUser);
+    console.log("data: ", dataFromUser);
     event.preventDefault();
     try {
-      const res = await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/api/users/${currentUser.id}`,
+      const res = await axiosInstance.put(
+        `/api/users/${currentUser.id}`,
         dataFromUser,
         {
           headers: {
             "Content-Type": "application/x-www-form-urlencoded",
           },
-          withCredentials: true, // Activer l'envoi des cookies avec la requête
         }
       );
-      // console.log(res);
+      console.log(res);
       if (res.status === 200) {
         setMessageNotif("Informations modifiées avec succes !!!");
         setSeverityNotif("success");
@@ -59,12 +74,11 @@ export default function InformationsSection() {
     } catch (error) {
       // console.error("Erreur lors de la modification des infos: ", error);
 
-      if (error.response.status === 401) {
+      if (error?.response.status === 401) {
         setMessageNotif(
           "Vous n'etes pas autorisé à faire cette opération. Vous allez être redirigé vers la page de connection."
         );
-        setSeverityNotif("error");
-        handleSubmitOpenNotif();
+
         setTimeout(() => {
           setIsAuthenticated(false);
           navigate("/login");
@@ -73,13 +87,11 @@ export default function InformationsSection() {
         setMessageNotif(
           "Un autre utilisateur est déjà enregistré avec cet email."
         );
-        setSeverityNotif("error");
-        handleSubmitOpenNotif();
       } else {
         setMessageNotif(error.code);
-        setSeverityNotif("error");
-        handleSubmitOpenNotif();
       }
+      setSeverityNotif("error");
+      handleSubmitOpenNotif();
     }
   };
 
@@ -135,9 +147,9 @@ export default function InformationsSection() {
             onSubmit={handleSubmit(onSubmitNewInfos)}
             className="flex w-full flex-col gap-4"
           >
-            <div className="bg-[#371577] flex p-8 gap-8 justify-center items-center rounded-md flex-wrap">
+            <div className="bg-[#371577] flex flex-wrap p-8 gap-8 justify-center items-center rounded-md">
               {/* Champ de l'e-mail */}
-              <div className="relative emailField w-full md:w-auto">
+              <div className="relative emailField">
                 <div className="flex flex-col gap-1 relative">
                   <label
                     htmlFor="email"
@@ -182,7 +194,7 @@ export default function InformationsSection() {
               </div>
 
               {/* Champ du prenom|firstname */}
-              <div className="relative firstField w-full md:w-auto">
+              <div className="relative firstField">
                 <div className="flex flex-col gap-1 relative">
                   <label
                     htmlFor="firstname"
@@ -203,10 +215,10 @@ export default function InformationsSection() {
                     type="text"
                     id="firstname"
                     {...register("firstname", {
-                      required: "Veuillez indiquer votre Nom.",
+                      required: "Veuillez indiquer votre Prénom.",
                       minLength: {
                         value: 3,
-                        message: `La longueure minimum du nom est de 3`,
+                        message: `La longueure minimum du Prénom est de 3`,
                       },
                     })}
                     onBlur={(e) => {
@@ -214,7 +226,6 @@ export default function InformationsSection() {
                       if (!firstnameValue) {
                         handleBlurFirstnameField();
                       }
-                      // Appeler la fonction onBlur fournie par react-hook-form pour conserver sa fonctionnalité
                       register("firstname").onBlur(e);
                     }}
                   />
@@ -227,7 +238,7 @@ export default function InformationsSection() {
               </div>
 
               {/* Champ du nom|lastname */}
-              <div className="relative lastnameField w-full md:w-auto">
+              <div className="relative lastnameField">
                 <div className="flex flex-col gap-1 relative">
                   <label
                     htmlFor="lastname"
@@ -271,9 +282,9 @@ export default function InformationsSection() {
               </div>
 
               {/* Champ de l'université */}
-              <div className="relative universityField w-full md:w-auto">
+              <div className="relative universityField">
                 <div className="flex items-center gap-1 relative">
-                  <select
+                  {/* <select
                     name="university"
                     id="university"
                     className="inputControlled focus:border-[#5396e7] focus:shadow-[0_0_0_3px_#4869ee3f] border-[#AB8AF1]"
@@ -283,7 +294,17 @@ export default function InformationsSection() {
                       -- Veuillez choisir votre université --
                     </option>
                     <option value="UNIKIN">UNIKIN</option>
-                  </select>
+                  </select> */}
+                  <InputAutocomplete
+                    onChangee={(event, newValue) => {
+                      // Utiliser setValue pour mettre à jour la valeur du formulaire avec react-hook-form
+                      setValue("university", newValue);
+                    }}
+                    valuee={currentUniversity}
+                    label="Université"
+                    className={``}
+                    options={university}
+                  />
                 </div>
                 {errors.password?.message && (
                   <p className="text-red-500 text-[0.8rem]">

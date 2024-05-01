@@ -84,7 +84,7 @@ export default function Header() {
   };
 
   return (
-    <header className="relative">
+    <header className="relative z-50">
       <div className="flex max-[767px]:w-full md:w-96 lg:w-[30rem] max-[767px]:justify-between items-center">
         <div className="logo ">
           <Link to={"/"}>

@@ -21,7 +21,7 @@ import SimpleLogin from "../simple-auth/simple-login";
 import axiosInstance from "../../utils/axios-instance";
 import currentUserContext from "../../contexts/current-user.context";
 import universityContext from "../../contexts/university.context";
-import CustomizedSnackbars from "../notif";
+import CustomizedSnackbars from "../feedback/notif";
 
 export default function MultiStepForm() {
   const [messageNotif, setMessageNotif] = useState("");

@@ -13,9 +13,12 @@ import { formatTimestamp } from "../utils/helper";
 import { CircularProgress } from "@mui/material";
 import InputFileUpload from "../components/profiles/profile-uploader";
 import axios from "axios";
-import CustomizedSnackbars from "../components/notif";
+import CustomizedSnackbars from "../components/feedback/notif";
 
 export default function Profil() {
+  window.scrollTo({
+    top: 0,
+  });
   const navigate = useNavigate();
   const { isAuthenticated } = useContext(authStatusContext);
   const { currentUser, setCurrentUser } = useContext(currentUserContext);

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { styled } from "@mui/material/styles";
 import Button from "@mui/material/Button";
 import CloudUploadIcon from "@mui/icons-material/CloudUpload";
-import CustomizedSnackbars from "../notif";
+import CustomizedSnackbars from "../feedback/notif";
 import PropTypes from "prop-types";
 const VisuallyHiddenInput = styled("input")({
   clip: "rect(0 0 0 0)",

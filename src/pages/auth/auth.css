@@ -33,7 +33,57 @@
 .login-page .inputControlled,
 .signup-page .inputControlled,
 .profile-page .inputControlled {
-  @apply w-full bg-red-600 h-[50px] bg-transparent text-white border border-solid focus:outline-none px-2 rounded;
+  @apply w-full  bg-transparent h-[56px] text-white border border-solid focus:outline-none px-2 rounded;
+}
+
+.profile-page .emailField,
+.profile-page .universityField,
+.profile-page .lastnameField,
+.profile-page .firstField {
+  @apply w-full md:w-[300px];
+}
+
+.profile-page .MuiStack-root.css-fedopx-MuiStack-root,
+.profile-page .universityField,
+.profile-page
+  .MuiAutocomplete-root.MuiAutocomplete-hasPopupIcon.css-clttge-MuiAutocomplete-root {
+  @apply w-full md:w-[1rem] text-white;
+  width: 100% !important;
+}
+.profile-page
+  .MuiAutocomplete-root.MuiAutocomplete-hasPopupIcon.css-clttge-MuiAutocomplete-root {
+  color: #fff !important;
+  border-radius: 5px !important;
+  border: 0.5px solid #ab8af1 !important;
+  outline: none !important;
+}
+.profile-page .MuiStack-root.css-fedopx-MuiStack-root input {
+  @apply text-white;
+}
+@media (min-width: 768px) {
+  .profile-page .MuiStack-root.css-fedopx-MuiStack-root,
+  .profile-page .universityField,
+  .profile-page
+    .MuiAutocomplete-root.MuiAutocomplete-hasPopupIcon.css-clttge-MuiAutocomplete-root {
+    width: 300px !important;
+  }
+}
+
+.profile-page .emailField input,
+.profile-page .universityField input,
+.profile-page .lastnameField input,
+.profile-page .firstField input {
+  @apply w-full md:w-auto;
+  /* width: 12rem !important; */
+}
+/* .MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-colorPrimary.MuiInputBase-fullWidth.MuiInputBase-formControl.MuiInputBase-adornedEnd.MuiAutocomplete-inputRoot.css-154xyx0-MuiInputBase-root-MuiOutlinedInput-root, */
+.profile-page .css-fedopx-MuiStack-root {
+  /* @apply w-[1Orem]; */
+  /* width: 12rem !important; */
+}
+
+.profile-page .MuiInputBase-root.MuiOutlinedInput-root.MuiInputBase-adornedEnd {
+  /* @apply bg-red-400 w-[1Orem]; */
 }
 
 .login-page .inputControlled.error,
@@ -47,17 +97,25 @@
 .profile-page .inputControlled.noError {
   @apply focus:border-[#5396e7] focus:shadow-[0_0_0_3px_#4869ee3f] border-[#AB8AF1];
 }
-
+.profile-page .MuiAutocomplete-root.Mui-focused.Mui-expanded {
+  border: 1px solid #5396e7 !important;
+  box-shadow: 0 0 0 3px #4869ee3f !important;
+}
 .login-page .labelControlled,
 .signup-page .labelControlled,
-.profile-page .labelControlled {
-  @apply absolute bg-[#371577] px-2 pointer-events-none;
+.profile-page .labelControlled,
+.profile-page .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root,
+.profile-page #grouped-demo-label {
+  @apply absolute bg-[#371577] px-2 pointer-events-none text-gray-200;
+  color: #fff !important;
+  font-size: 1rem !important;
 }
 
 .login-page .labelControlled.focus,
 .signup-page .labelControlled.focus,
 .profile-page .labelControlled.focus {
-  @apply -translate-x-1 -translate-y-2/4 left-4 top-0 text-[#CFBEEF];
+  @apply -translate-x-1 -translate-y-2/4 left-4 top-0 text-[#CFBEEF] text-[2px];
+  font-size: 0.78rem !important;
 }
 
 .login-page .labelControlled.noFocus,
@@ -70,4 +128,11 @@
 .signup-page form select option,
 .profile-page form select option {
   @apply text-gray-900;
+}
+
+.profile-page
+  svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeMedium.css-i4bv87-MuiSvgIcon-root,
+.profile-page
+  svg.MuiSvgIcon-root.MuiSvgIcon-fontSizeSmall.css-ptiqhd-MuiSvgIcon-root {
+  color: #fff;
 }
