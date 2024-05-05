@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
+
 // import { useNavigate } from "react-router-dom";
 import CustomizedSnackbars from "../feedback/notif";
 import authStatusContext from "../../contexts/auth.context";
@@ -53,7 +54,9 @@ export default function SimpleSignup() {
         setSeverityNotif("error");
         handleSubmitOpenNotif();
       } else {
-        setMessageNotif("Une erreur s'est produite.");
+        setMessageNotif(
+          "Une erreur s'est produite. Veuillez réessayé plutard!"
+        );
         setSeverityNotif("error");
         handleSubmitOpenNotif();
       }

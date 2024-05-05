@@ -8,6 +8,8 @@ import {
   Button,
   TextField,
 } from "@mui/material";
+// import LoadingButton from "@mui/lab/LoadingButton";
+import { LoadingButton } from "@mui/lab";
 import { Dropzone, FileMosaic, FilesUiProvider } from "@files-ui/react";
 import authStatusContext from "../../contexts/auth.context";
 import "./file-uploader.css";
@@ -22,6 +24,7 @@ import axiosInstance from "../../utils/axios-instance";
 import currentUserContext from "../../contexts/current-user.context";
 import universityContext from "../../contexts/university.context";
 import CustomizedSnackbars from "../feedback/notif";
+import { Send } from "@mui/icons-material";
 
 export default function MultiStepForm() {
   const [messageNotif, setMessageNotif] = useState("");
@@ -32,9 +35,11 @@ export default function MultiStepForm() {
   };
 
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const { isAuthenticated } = useContext(authStatusContext); // Vérifier si l'utilisateur est authentifié
   const { currentUser } = useContext(currentUserContext);
   const { university } = useContext(universityContext);
+
   const [activeStep, setActiveStep] = useState(0); // Gérer l'étape actuelle
   const [files, setFiles] = useState([]);
   /*const [formData, setFormData] = useState({
@@ -73,6 +78,7 @@ export default function MultiStepForm() {
           fileData.title.trim() !== "" && fileData.description.trim() !== ""
       )
     ) {
+      setLoading(true);
       const formDataToSend = new FormData();
       const isFileDuplicate = (formData, file) => {
         for (const [key, value] of formData.entries()) {
@@ -92,7 +98,6 @@ export default function MultiStepForm() {
       files.forEach((file) => {
         const fileData = filesData.find((data) => data.id === file.id);
 
-        console.log("Fichiers à fileData :", fileData);
         if (fileData) {
           // Utilisez la fonction `isFileDuplicate` pour garantir que le fichier n'est pas déjà ajouté
           if (!isFileDuplicate(formDataToSend, file.file)) {
@@ -107,16 +112,12 @@ export default function MultiStepForm() {
             );
           }
         } else {
+          setLoading(false);
           console.error("Données du fichier manquantes :", file);
         }
       });
       formDataToSend.append("userId", currentUser?.id || "");
 
-      // console.log("formDataToSend: ", formDataToSend);
-      console.log(
-        "FormData final avant envoi :",
-        Array.from(formDataToSend.entries())
-      );
       try {
         const res = await axiosInstance.post(`/api/ressources`, formDataToSend);
 
@@ -126,28 +127,28 @@ export default function MultiStepForm() {
         setTimeout(() => {
           navigate("/upload/success");
         }, 2500);
-        console.log("ress: ", res);
+        // console.log("ress: ", res);
         // console.log("formDataToSend: ", formDataToSend);
       } catch (error) {
+        setLoading(false);
+        setSeverityNotif("error");
         console.error("Erreur lors de la soumission :", error);
         if (
           error?.response?.status === 404 ||
           error?.response?.status === 400
         ) {
           setMessageNotif(error.response.data.message);
-          setSeverityNotif("error");
-          handleSubmitOpenNotif();
         } else if (error.code === "ERR_NETWORK") {
           setMessageNotif("Serveur hors service.");
-          setSeverityNotif("error");
-          handleSubmitOpenNotif();
+        } else if (error.response.data) {
+          setMessageNotif(error.response.data.message);
         } else {
           setMessageNotif("Une erreur s'est produite.");
-          setSeverityNotif("error");
-          handleSubmitOpenNotif();
         }
+        handleSubmitOpenNotif();
       }
     } else {
+      setLoading(false);
       alert(
         "Veuillez remplir tous les champs obligatoires pour chaque fichier."
       );
@@ -236,9 +237,9 @@ export default function MultiStepForm() {
               <Dropzone
                 className="w-full flex text-[10px]"
                 label="Glissez-déposez vos fichiers ici ou cliquez pour téléverser."
-                accept="application/pdf, application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document" //.pdf .doc .docx
-                maxFileSize={30 * 1024 * 1024}
-                maxFiles={5}
+                accept="application/pdf"
+                maxFileSize={Number.parseFloat(5 * 1024 * 1024).toFixed(0)}
+                maxFiles={1}
                 onChange={updateFiles}
                 value={files}
                 autoClean
@@ -251,7 +252,7 @@ export default function MultiStepForm() {
                       }}
                       className="bg-cyan-100 text-sm mt-6 py-4"
                     >
-                      Fichiers supportés : <b>.pdf</b>, <b>.doc</b>,<b>.docx</b>
+                      Fichiers supportés : <b>.pdf</b>
                     </div>
                   ),
                 }}
@@ -458,9 +459,15 @@ export default function MultiStepForm() {
               !allFieldsFilled ? (
                 <div></div>
               ) : (
-                <Button onClick={handleSubmit} variant="contained">
+                <LoadingButton
+                  onClick={handleSubmit}
+                  variant="contained"
+                  loading={loading}
+                  loadingPosition="end"
+                  endIcon={<Send />}
+                >
                   Soumettre
-                </Button>
+                </LoadingButton>
               )
             ) : allFieldsFilled ? (
               <Button onClick={handleNext} variant="contained">
@@ -495,9 +502,15 @@ export default function MultiStepForm() {
                 Retour
               </Button>
               {isAuthenticated && (
-                <Button onClick={handleSubmit} variant="contained">
+                <LoadingButton
+                  onClick={handleSubmit}
+                  variant="contained"
+                  loading={loading}
+                  loadingPosition="end"
+                  endIcon={<Send />}
+                >
                   Soumettre
-                </Button>
+                </LoadingButton>
               )}
             </StepContent>
           </Step>

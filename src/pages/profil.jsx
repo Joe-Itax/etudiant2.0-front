@@ -16,9 +16,11 @@ import axios from "axios";
 import CustomizedSnackbars from "../components/feedback/notif";
 
 export default function Profil() {
-  window.scrollTo({
-    top: 0,
-  });
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+    });
+  }, []);
   const navigate = useNavigate();
   const { isAuthenticated } = useContext(authStatusContext);
   const { currentUser, setCurrentUser } = useContext(currentUserContext);

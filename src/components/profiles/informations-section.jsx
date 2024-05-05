@@ -49,7 +49,7 @@ export default function InformationsSection() {
   const navigate = useNavigate();
   // handleSubmitOpenNotif();
   const onSubmitNewInfos = async (dataFromUser, event) => {
-    console.log("data: ", dataFromUser);
+    // console.log("data: ", dataFromUser);
     event.preventDefault();
     try {
       const res = await axiosInstance.put(

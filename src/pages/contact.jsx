@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { Button, styled } from "@mui/material";
 import { Send } from "@mui/icons-material";
@@ -8,9 +8,11 @@ import axiosInstance from "../utils/axios-instance";
 import TransitionAlerts from "../components/feedback/alert";
 
 export default function Contact() {
-  window.scrollTo({
-    top: 0,
-  });
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+    });
+  }, []);
 
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState("");
@@ -78,6 +80,7 @@ export default function Contact() {
       // console.error("Erreur lors de la modification des infos: ", error);
     }
   };
+
   return (
     <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">
       <TransitionAlerts
@@ -187,7 +190,7 @@ export default function Contact() {
               htmlFor="sujet"
               className="block text-sm font-semibold leading-6 text-gray-900"
             >
-              Sujet
+              Sujet *
             </label>
             <div className="mt-2.5">
               <select
@@ -225,7 +228,7 @@ export default function Contact() {
               htmlFor="email"
               className="block text-sm font-semibold leading-6 text-gray-900"
             >
-              Email
+              Email *
             </label>
             <div className="mt-2.5">
               <input
@@ -253,7 +256,7 @@ export default function Contact() {
               htmlFor="message"
               className="block text-sm font-semibold leading-6 text-gray-900"
             >
-              Message
+              Message *
             </label>
             <div className="mt-2.5">
               <textarea
@@ -283,12 +286,6 @@ export default function Contact() {
           </div>
         </div>
         <div className="mt-10">
-          {/* <button
-            type="submit"
-            className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          >
-            Envoyer
-          </button> */}
           <ButtonMuiCustomized
             type="submit"
             className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"

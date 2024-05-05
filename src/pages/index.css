@@ -21,3 +21,78 @@ input:-moz-autofill {
 .upload-success-page .button-mui {
   @apply py-6 px-4 min-[360px]:px-8  rounded-full;
 }
+
+.ressources-page {
+  @apply flex flex-col justify-center;
+}
+
+.ressources-page .hero {
+  @apply flex flex-col justify-center gap-12 bg-[#f6f7fb] px-8 py-16 sm:py-28;
+}
+
+.ressources-page .hero h1 {
+  @apply self-center text-2xl font-semibold sm:w-[35rem] text-center text-gray-600;
+}
+
+.ressources-page .search-box {
+  @apply self-center w-full flex justify-center;
+}
+
+.ressources-page .search-box form.ais-SearchBox-form {
+  @apply rounded-full border px-4 py-2 bg-white flex justify-between items-center w-full sm:w-[35rem];
+}
+
+.ressources-page .search-box form.ais-SearchBox-form input {
+  @apply border-0 w-full px-2 focus-visible:outline-0;
+  box-shadow: none !important;
+}
+
+.ressources-page .search-box.search-box-focused form.ais-SearchBox-form {
+  @apply shadow-[0px_0px_5px_rgba(37,99,235,.5)] brightness-[1.2] border-[rgba(37,99,235,1)];
+}
+
+.ressources-page
+  .search-box
+  form.ais-SearchBox-form
+  button.ais-SearchBox-submit {
+  @apply p-3 pl-3 max-[400px]:px-2;
+}
+.ressources-page
+  .search-box
+  form.ais-SearchBox-form
+  button.ais-SearchBox-submit
+  svg {
+  @apply w-5 h-5;
+}
+
+.ressources-page .ais-SearchBox-reset {
+  @apply hidden;
+}
+
+.ressources-page .search-result {
+  @apply flex flex-col;
+}
+
+.ressources-page .hits-container {
+  @apply flex flex-col md:p-16 min-[500px]:px-8 py-12 px-4;
+}
+
+.ressources-page .hits-container h2 {
+  @apply text-2xl font-semibold text-gray-600 mb-5;
+}
+
+.ressources-page .hits-container .ais-Hits a {
+  @apply hover:bg-[#f1f7fe] rounded-3xl py-6 px-2 flex items-start gap-3;
+}
+
+.ressources-page .hits-container .ais-Hits a .search-result-info {
+  @apply flex flex-col gap-2;
+}
+
+.ressources-page .hits-container .ais-Hits a h3 {
+  @apply text-[#3092fa] font-semibold text-xl;
+}
+
+.ressources-page .hits-container .ais-Hits a .categorie {
+  @apply text-gray-600 text-[1rem];
+}

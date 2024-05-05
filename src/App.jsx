@@ -3,12 +3,16 @@ import Home from "./pages/home";
 import Login from "./pages/auth/login";
 import SignUp from "./pages/auth/signup";
 import Ressources from "./pages/ressources";
+import ResourceDetail from "./components/ressource-detail/ressource-detail";
 import Contact from "./pages/contact";
 import Upload from "./pages/upload";
 import UploadSuccess from "./pages/upload-success";
 import Profil from "./pages/profil";
 import Layout from "./components/layout";
 import ContextProvider from "./components/context-provider/context-provider";
+import { useEffect } from "react";
+import SearchResults from "./pages/search";
+
 // console.log("import.meta.env: ", import.meta.env);
 
 const routes = createBrowserRouter([
@@ -23,6 +27,14 @@ const routes = createBrowserRouter([
       {
         path: "/ressources",
         element: <Ressources />,
+      },
+      {
+        path: "/ressources/:id",
+        element: <ResourceDetail />,
+      },
+      {
+        path: "/search-results",
+        element: <SearchResults />,
       },
       {
         path: "/contact",
@@ -56,9 +68,12 @@ const routes = createBrowserRouter([
   // },
 ]);
 function App() {
-  window.scrollTo({
-    top: 0,
-  });
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+    });
+  }, []);
+
   return (
     <>
       <ContextProvider>

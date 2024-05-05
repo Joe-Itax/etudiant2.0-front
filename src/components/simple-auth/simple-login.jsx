@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
+// import { LoadingButton } from "@mui/lab";
 // import { useNavigate } from "react-router-dom";
 import CustomizedSnackbars from "../feedback/notif";
 import authStatusContext from "../../contexts/auth.context";
@@ -44,6 +45,10 @@ export default function SimpleLogin() {
     setIsFocusPasswordFiel(false);
   };
 
+  if (Object.keys(errors).length > 0) {
+    console.log("errors usefom*rm!: ", errors);
+  }
+
   const onSubmit = async (dataFromUser, event) => {
     // console.log("data: ", dataFromUser);
     event.preventDefault();
@@ -72,7 +77,7 @@ export default function SimpleLogin() {
         handleSubmitOpenNotif();
       } else {
         setMessageNotif(
-          "Oups, Une erreur s'est produite lors de la connection de votre compte."
+          "Oups, Une erreur s'est produite lors de la connection de votre compte.Veuillez réessayé plutard!"
         );
         setSeverityNotif("error");
         handleSubmitOpenNotif();

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import { ReactTyped } from "react-typed";
+import Footer from "../components/footer/footer";
 import FileUploader from "../components/file-uploader/file-uploader";
 import logo from "/assets/Etudiant-20.svg";
 
@@ -42,6 +43,7 @@ export default function Upload() {
       <div className="w-full px-4 sm:px-8 py-10 sm:py-20 md:py-32 flex justify-center items-center">
         <FileUploader />
       </div>
+      <Footer></Footer>
     </div>
   );
 }

@@ -7,7 +7,7 @@ export default function UploadSuccess() {
     top: 0,
   });
   return (
-    <div className="upload-success-page">
+    <div className="upload-success-page py-8 pb-24">
       <div className="flex flex-col justify-center items-center mt-16 px-8">
         <div className="w-48">
           <svg

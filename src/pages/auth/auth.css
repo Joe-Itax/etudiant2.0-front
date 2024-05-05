@@ -92,13 +92,34 @@
   @apply focus:border-[#e75353] focus:shadow-[0_0_0_3px_#4869ee3f] border-[#f18a9b];
 }
 
+.custom-uploader [type="text"]:focus,
+.custom-uploader input:where(:not([type])):focus,
+.custom-uploader [type="email"]:focus,
+.custom-uploader [type="password"]:focus,
+.custom-uploader [type="number"]:focus,
+.custom-uploader [type="search"]:focus,
+.custom-uploader [multiple]:focus,
+.custom-uploader textarea:focus,
+.custom-uploader select:focus,
+.profile-page [type="text"]:focus,
+.profile-page input:where(:not([type])):focus,
+.profile-page [type="email"]:focus,
+.profile-page [type="password"]:focus,
+.profile-page [type="number"]:focus,
+.profile-page [type="search"]:focus,
+.profile-page [multiple]:focus,
+.profile-page textarea:focus,
+.profile-page select:focus {
+  --tw-ring-shadow: none !important;
+}
+
 .login-page .inputControlled.noError,
 .signup-page .inputControlled.noError,
 .profile-page .inputControlled.noError {
-  @apply focus:border-[#5396e7] focus:shadow-[0_0_0_3px_#4869ee3f] border-[#AB8AF1];
+  /* @apply focus:border-[#5396e7] focus:shadow-[0_0_0_3px_#4869ee3f] border-[#AB8AF1]; */
 }
 .profile-page .MuiAutocomplete-root.Mui-focused.Mui-expanded {
-  border: 1px solid #5396e7 !important;
+  /* border: 1px solid #5396e7 !important; */
   box-shadow: 0 0 0 3px #4869ee3f !important;
 }
 .login-page .labelControlled,
