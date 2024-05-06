@@ -28,18 +28,18 @@ export default function ContextProvider({ children }) {
         setUniversity(universityReq.data.universities);
 
         const ressourceReq = await axiosInstance.get(`/api/ressources`);
-        // console.log("ressourceReq: ", ressourceReq);
+        console.log("ressourceReq: ", ressourceReq);
         setRessource(ressourceReq.data.ressources);
 
         const auth = await axiosInstance.get(`/api/auth/status`);
-        // console.log("auth: ", auth);
+        console.log("auth: ", auth);
         setCurrentUser(auth.data.user);
         setIsAuthenticated(auth.data.isAuthenticated);
       } catch (err) {
-        // console.log(
-        //   "erreur lors de la recupération du status de connection: ",
-        //   err
-        // );
+        console.log(
+          "erreur lors de la recupération du status de connection: ",
+          err
+        );
         setIsAuthenticated(false);
       }
     };

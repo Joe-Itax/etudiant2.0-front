@@ -11,6 +11,7 @@ import authStatusContext from "../../contexts/auth.context";
 import CustomizedSnackbars from "../../components/feedback/notif";
 import currentUserContext from "../../contexts/current-user.context";
 import usersContext from "../../contexts/users.context";
+// import ressourceContext from "../../contexts/ressource.context";
 export default function Login() {
   const [messageNotif, setMessageNotif] = useState("");
   const [severityNotif, setSeverityNotif] = useState("");
@@ -47,7 +48,7 @@ export default function Login() {
           "Content-Type": "application/x-www-form-urlencoded",
         },
       });
-      // console.log("res: ", res); //joeitax3@gmail.com
+      console.log("res: ", res); //joeitax3@gmail.com
       // setIsAuthenticated(res?.data?.isLoggedIn);
       setMessageNotif(res.data.message);
       setSeverityNotif("success");
@@ -58,7 +59,7 @@ export default function Login() {
       navigate(from, { replace: true });
       // l;
     } catch (error) {
-      // console.error("Error: ", error);
+      console.error("Error: ", error);
       if (error?.response?.status === 404 || error?.response?.status === 400) {
         setMessageNotif(error.response.data.message);
         setSeverityNotif("error");
