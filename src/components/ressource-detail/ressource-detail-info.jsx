@@ -118,7 +118,7 @@ export default function RessourceDetailInfo({
           </div>
         </form>
         <div className="comments">
-          {!currentRessource && !users.length > 0 ? (
+          {!currentRessource || !users.length > 0 ? (
             <div className="flex justify-center">
               <CircularProgress />
             </div>
