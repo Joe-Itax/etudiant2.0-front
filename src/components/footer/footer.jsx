@@ -49,17 +49,21 @@ export default function Footer() {
       </div>
       <div className="links-box">
         <div>
-          <Link to={`https://github.com/Joe-Itax`}>
+          <Link
+            to={`https://github.com/Joe-Itax/etudiant2.0-front/tree/dev/front`}
+            target="_blank"
+            rel="noreferrer"
+          >
             <RiGithubFill size={40} />
           </Link>
         </div>
         <div>
-          <Link to={`#`}>
+          <Link to={`#`} rel="noreferrer">
             <RiLinkedinBoxFill size={40} />
           </Link>
         </div>
         <div>
-          <Link to={`#`}>
+          <Link to={`#`} rel="noreferrer">
             <RiFacebookCircleFill size={40} />
           </Link>
         </div>

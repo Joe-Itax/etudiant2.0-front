@@ -67,7 +67,7 @@ const routes = createBrowserRouter([
   //   element: <ActiveAccount />,
   // },
 ]);
-function App() {
+export default function App() {
   useEffect(() => {
     window.scrollTo({
       top: 0,
@@ -82,5 +82,3 @@ function App() {
     </>
   );
 }
-
-export default App;

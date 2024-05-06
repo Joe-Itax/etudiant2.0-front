@@ -1,8 +1,18 @@
-import { InstantSearch, SearchBox, Hits, Highlight } from "react-instantsearch";
+import {
+  InstantSearch,
+  SearchBox,
+  Hits,
+  Highlight,
+  useInstantSearch,
+} from "react-instantsearch";
 import algoliasearch from "algoliasearch";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { RiBookFill } from "@remixicon/react";
 import { Link } from "react-router-dom";
+import { CircularProgress } from "@mui/material";
+import authStatusContext from "../contexts/auth.context";
+import AlertDialog2 from "../components/feedback/alert-dialog2";
 import PropTypes from "prop-types";
 
 const searchClient = algoliasearch(
@@ -10,7 +20,24 @@ const searchClient = algoliasearch(
   import.meta.env.VITE_ALGOLIA_SEARCHAPI_KEY
 );
 
-const Hit = ({ hit }) => {
+function Hit({ hit }) {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useContext(authStatusContext);
+  const [open, setOpen] = useState(false);
+
+  const handleLinkClick = () => {
+    navigate("/login", { state: { from: `/ressources/${hit.id}` } });
+  };
+  const handleClickOpen = (e) => {
+    if (!isAuthenticated) {
+      e.preventDefault();
+      setOpen(true);
+    }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   // console.log("hittt: ", hit);
   const categoriesMap = {
     Livre: "Livre",
@@ -26,25 +53,76 @@ const Hit = ({ hit }) => {
   const categorieKey = hit.categorie;
   const categorie = categoriesMap[categorieKey] || "Autre";
 
+  // console.log("hit: ", hit);
+
   return (
     <div className="search-result">
-      <Link className="" to={`/ressources/${hit.id}`}>
+      <AlertDialog2
+        open={open}
+        handleClose={handleClose}
+        handleClickToLogin={handleLinkClick}
+      />
+      {hit ? (
+        <Link
+          className=""
+          to={`/ressources/${hit.id}`}
+          onClick={handleClickOpen}
+        >
+          <div>
+            <RiBookFill color="#967fd6" size={25} />
+          </div>
+          <div className="search-result-info">
+            <h3 className="">
+              <Highlight attribute="title" hit={hit} />
+            </h3>
+            <p className="categorie">categorie: {categorie}</p>
+          </div>
+        </Link>
+      ) : (
         <div>
-          <RiBookFill color="#967fd6" size={25} />
+          <CircularProgress></CircularProgress>
         </div>
-        <div className="search-result-info">
-          <h3 className="">
-            <Highlight attribute="title" hit={hit} />
-          </h3>
-          <p className="categorie">categorie: {categorie}</p>
-        </div>
-      </Link>
+      )}
     </div>
   );
-};
+}
 Hit.propTypes = {
   hit: PropTypes.object,
 };
+
+function NoResultsBoundary({ children, fallback }) {
+  const { results } = useInstantSearch();
+  if (!results.__isArtificial && results.nbHits === 0) {
+    return (
+      <>
+        {fallback}
+        <div hidden>{children}</div>
+      </>
+    );
+  }
+
+  return children;
+}
+NoResultsBoundary.propTypes = {
+  children: PropTypes.node,
+  fallback: PropTypes.node,
+};
+
+function NoResults() {
+  const { indexUiState } = useInstantSearch();
+  return (
+    <div>
+      <p>
+        Aucun document correspondant à votre recherche{" "}
+        <q>
+          <b>{indexUiState.query}</b>
+        </q>{" "}
+        n&apos;a été trouvé.
+      </p>{" "}
+      <p>Essayez une autre recherche avec des mots-clés différents.</p>
+    </div>
+  );
+}
 
 export default function Ressources() {
   const [isFocused, setIsFocused] = useState(false);
@@ -81,77 +159,12 @@ export default function Ressources() {
           <div>
             <h2>Ressources les plus recentes</h2>
           </div>
-          <Hits hitComponent={Hit} className="" />
+          <NoResultsBoundary fallback={<NoResults />}>
+            <Hits hitComponent={Hit} />
+          </NoResultsBoundary>
         </div>
         {/* <Pagination /> */}
       </InstantSearch>
     </div>
   );
 }
-
-// import { useState } from "react";
-// import { InstantSearch, SearchBox, Hits } from "react-instantsearch";
-// import algoliasearch from "algoliasearch";
-// import { useNavigate } from "react-router-dom";
-// import { RiBookFill } from "@remixicon/react";
-// import PropTypes from "prop-types";
-
-// const searchClient = algoliasearch(
-//   import.meta.env.VITE_ALGOLIA_APP_ID,
-//   import.meta.env.VITE_ALGOLIA_SEARCHAPI_KEY
-// );
-
-// const Hit = ({ hit }) => (
-//   <div className="search-result">
-//     <RiBookFill color="#967fd6" size={25} />
-//     <div>
-//       <h3>{hit.title}</h3>
-//       <p>Catégorie: {hit.categorie}</p>
-//     </div>
-//   </div>
-// );
-
-// Hit.propTypes = {
-//   hit: PropTypes.object.isRequired,
-// };
-
-// const AutoCompleteSearch = () => {
-//   const [query, setQuery] = useState("");
-//   const navigate = useNavigate();
-
-//   const handleKeyPress = (event) => {
-//     console.log("Query value:", query);
-//     if (event.key === "Enter" && query.trim() !== "") {
-//       console.log("Navigating with query:", query);
-//       navigate(`/search-results?query=${query}`);
-//     }
-//   };
-
-//   return (
-//     <div>
-//       <SearchBox
-//         onChangeCapture={(e) => setQuery(e.target.value)}
-//         placeholder="Rechercher des ressources..."
-//         onKeyDown={handleKeyPress}
-//       />
-//       {query && (
-//         <div className="autocomplete-hits">
-//           <Hits hitComponent={Hit} />
-//           <button onClick={() => navigate(`/search-results?query=${query}`)}>
-//             Voir tous les résultats
-//           </button>
-//         </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// const Ressources = () => (
-//   <div className="ressources-page">
-//     <InstantSearch searchClient={searchClient} indexName="etudiant2.0">
-//       <AutoCompleteSearch />
-//     </InstantSearch>
-//   </div>
-// );
-
-// export default Ressources;

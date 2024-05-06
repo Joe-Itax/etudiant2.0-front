@@ -6,7 +6,9 @@ export default function Layout() {
   return (
     <>
       <Header />
-      <Outlet />
+      <main className="relative mt-[92.3px] md:mt-[111px]">
+        <Outlet />
+      </main>
       <Footer />
     </>
   );

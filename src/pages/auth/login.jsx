@@ -1,6 +1,6 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import axiosInstance from "../../utils/axios-instance";
 import amico from "/assets/amico.svg";
 import "./auth.css";
@@ -10,6 +10,7 @@ import authStatusContext from "../../contexts/auth.context";
 
 import CustomizedSnackbars from "../../components/feedback/notif";
 import currentUserContext from "../../contexts/current-user.context";
+import usersContext from "../../contexts/users.context";
 export default function Login() {
   const [messageNotif, setMessageNotif] = useState("");
   const [severityNotif, setSeverityNotif] = useState("");
@@ -26,9 +27,13 @@ export default function Login() {
   } = useForm();
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const from = location.state?.from || "/"; // Retourne à la page précédente ou à la racine
 
   const { isAuthenticated, setIsAuthenticated } = useContext(authStatusContext);
   const { setCurrentUser } = useContext(currentUserContext);
+  const { setUsers } = useContext(usersContext);
 
   // console.log("isAuthenticated: ", isAuthenticated);
 
@@ -49,6 +54,9 @@ export default function Login() {
       handleSubmitOpenNotif();
       setIsAuthenticated(res.data.isLoggedIn);
       setCurrentUser(res.data.user);
+      setUsers(res.data.users);
+      navigate(from, { replace: true });
+      // l;
     } catch (error) {
       // console.error("Error: ", error);
       if (error?.response?.status === 404 || error?.response?.status === 400) {
@@ -63,20 +71,7 @@ export default function Login() {
         handleSubmitOpenNotif();
       }
     }
-    // if (event.currentTarget || event.target) {
-    //   event.currentTarget.reset();
-    //   event.target.reset();
-    // }
-    // reset();
   };
-
-  useEffect(() => {
-    setTimeout(function () {
-      if (isAuthenticated) {
-        navigate("/profil");
-      }
-    });
-  }, [isAuthenticated, navigate]);
 
   const [isFocusEmailFiel, setIsFocusEmailFiel] = useState(false);
   const [isFocusPasswordFiel, setIsFocusPasswordFiel] = useState(false);

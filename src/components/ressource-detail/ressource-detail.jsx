@@ -1,17 +1,9 @@
-import { useState, useContext } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useState, useContext, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { CircularProgress, Button } from "@mui/material";
-import { Send, Download } from "@mui/icons-material";
-import { formatTimestamp } from "../../utils/helper";
-import {
-  RiInformation2Fill,
-  RiArrowLeftLine,
-  RiCommunityFill,
-  RiFocus2Fill,
-  RiUserSharedFill,
-} from "@remixicon/react";
-import Avatar from "react-avatar";
+import { CircularProgress } from "@mui/material";
+
+import authStatusContext from "../../contexts/auth.context";
 import currentUserContext from "../../contexts/current-user.context";
 import usersContext from "../../contexts/users.context";
 import universityContext from "../../contexts/university.context";
@@ -19,17 +11,29 @@ import ressourceContext from "../../contexts/ressource.context";
 import axiosInstance from "../../utils/axios-instance";
 import "./style.css";
 import CustomizedSnackbars from "../feedback/notif";
+import PdfViewer from "../pdf-viewer/pdf-viewer";
+import PersistentDrawerLeft from "../persistant-drawer/persistant-drawer";
+import RessourceDetailInfo from "./ressource-detail-info";
+
+// import PropTypes from "prop-types";
 
 // console.log(res);
+
 export default function ResourceDetail() {
   const { id } = useParams();
 
+  const { isAuthenticated } = useContext(authStatusContext);
   const { currentUser } = useContext(currentUserContext);
   const { users } = useContext(usersContext);
   const { university } = useContext(universityContext);
-  const { ressource } = useContext(ressourceContext);
+  const { ressource, setRessource } = useContext(ressourceContext);
+  const navigate = useNavigate();
 
-  // console.log("resssssource: ", ressource);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate("/login", { state: { from: `/ressources/${id}` } });
+    }
+  });
 
   let findUserPublishedResource;
   let findNameOfUniversityIfExist;
@@ -59,8 +63,6 @@ export default function ResourceDetail() {
     });
   }
 
-  console.log("currentRessource: ", currentRessource);
-
   const [messageNotif, setMessageNotif] = useState("");
   const [severityNotif, setSeverityNotif] = useState("");
   const [openNotif, setOpenNotif] = useState(false);
@@ -87,36 +89,28 @@ export default function ResourceDetail() {
         `/api/ressources/${currentRessource.id}/comment`,
         dataFromUser
       );
-      console.log("res: ", res);
+      // console.log("res: ", res);
+      setRessource(res.data.ressource);
       setMessageNotif(res.data.message);
       setSeverityNotif("success");
       handleSubmitOpenNotif();
     } catch (error) {
+      console.log("error: ", error);
+      if (error.response) {
+        setMessageNotif(error.response.data.message);
+      }
+      setMessageNotif("Une erreur s'est produite. Veuillez réessayer plutard!");
       setSeverityNotif("error");
       handleSubmitOpenNotif();
     }
   };
 
-  /* useEffect(() => {
-    const fetchResource = async () => {
-      try {
-        const res = await axiosInstance.get(`/api/ressources/${id}`);
-        // console.log(res);
-        setResource(res.data.ressource);
-        setComments(res.data.ressource.Comment);
-      } catch (error) {
-        console.log("erreur lors de la récuperation de la ressource: ", error);
-      }
-    };
-
-    fetchResource();
-  }, [id]);*/
-
-  // console.log(comments);
+  // console.log("ressource: ", ressource);
+  // console.log("currentRessource: ", currentRessource);
 
   if (!currentRessource) {
     return (
-      <div className="w-full flex justify-center my-24">
+      <div className="w-full h-48 flex items-center justify-center my-24">
         <CircularProgress />
       </div>
     );
@@ -152,157 +146,30 @@ export default function ResourceDetail() {
         setOpen={setOpenNotif}
         severity={severityNotif}
       />
-      <div className="resource-info">
-        <Link className="block" to={`/ressources`}>
-          <RiArrowLeftLine />
-        </Link>
-        <span className="title-section">
-          <RiInformation2Fill size={20} color="#3092FA" />{" "}
-          <span>Information</span>
-        </span>
-        <h1>{currentRessource.title}</h1>
-        <p className="description-resource">{currentRessource.description}</p>
 
-        <div>
-          <p className="flex items-center gap-2">
-            <RiFocus2Fill size={30} color="#3092FA" /> Catégorie:
-          </p>
-          <span className="content-info">{categorie}</span>
-        </div>
-
-        {findNameOfUniversityIfExist && (
-          <div>
-            <p className="flex items-center gap-2">
-              <RiCommunityFill size={30} color="#3092FA" /> Université:{" "}
-            </p>
-            <span className="content-info">
-              {findNameOfUniversityIfExist.title} -{" "}
-              {findNameOfUniversityIfExist.abbreviation}
-            </span>
-          </div>
-        )}
-
-        <div>
-          <p className="flex items-center gap-2">
-            <RiUserSharedFill size={30} color="#3092FA" /> Partagé par:{" "}
-          </p>
-          {findUserPublishedResource && (
-            <span className="content-info">
-              {findUserPublishedResource.firstname}{" "}
-              {findUserPublishedResource.lastname}
-            </span>
-          )}
-        </div>
-        <Button
-          variant="contained"
-          startIcon={<Download />}
-          onClick={handleClickDownloadResource}
-        >
-          Télécharger le document
-        </Button>
-        <div className="commentaire border-t py-4">
-          <span className="title">Commentaires</span>
-          <form onSubmit={handleSubmit(onSubmit)} className="">
-            <div>
-              <div className="mt-2.5">
-                <textarea
-                  name="content"
-                  id="content"
-                  rows={2}
-                  className=""
-                  {...register("content", {
-                    required: "Le champ Commentaire est requis.",
-                    minLength: {
-                      value: 5,
-                      message: `La longueure minimum du message est de 5 caractères`,
-                    },
-                    pattern: {
-                      value: /\S/,
-                      message:
-                        "Le contenu de ce champ ne doit pas être vide ou contenir uniquement des espaces",
-                    },
-                  })}
-                />
-              </div>
-              {errors.content?.message && (
-                <div>
-                  <p className="text-red-500 text-[0.8rem] text-end">
-                    {errors.content?.message}
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <div className="self-end">
-              <button
-                type="submit"
-                className="flex items-center gap-2 bg-[#1976d2] px-4 py-2 rounded-full text-white font-bold"
-              >
-                <Send /> <span>Publié</span>
-              </button>
-            </div>
-          </form>
-          <div className="comments">
-            {!currentRessource ? (
-              <div className="flex justify-center">
-                <CircularProgress />
-              </div>
-            ) : (
-              currentRessource.Comment.map((comment) => {
-                const author = users.find(
-                  (user) => user.id === comment.authorId
-                );
-                // console.log("author: ", author);
-                return (
-                  <div key={comment.id}>
-                    <div className="comment">
-                      <div className="author">
-                        <div className="profile-image">
-                          {!author?.profile?.urlProfilImage ? (
-                            <div className="">
-                              <Avatar
-                                name={`${currentUser.firstname} ${currentUser.lastname}`}
-                                round={true}
-                                size="50px"
-                                src={null}
-                                alt="Avatar"
-                                className={`text-2xl`}
-                              />
-                            </div>
-                          ) : (
-                            <div className="w-12 h-12 rounded-full">
-                              <img
-                                src="https://lh3.googleusercontent.com/a/ACg8ocLDVlOkxeOA4vNldYH2LzZrZKmUEVSjSt1k71BaKuM4Uxxyg_k=s96-c"
-                                alt=""
-                                className="w-full h-full object-cover rounded-full"
-                              />
-                            </div>
-                          )}
-                        </div>
-                        <div className="details-info">
-                          <div className="name">
-                            <span>
-                              {author.firstname} {author.lastname}
-                            </span>
-                          </div>
-                          <div className="createdAt">
-                            <span>{formatTimestamp(comment.createdAt)}</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="content">
-                        <p>{comment.content}</p>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </div>
-      </div>
       <div className="resource-content">
-        <div>Contenu du fichier pdf</div>
+        {/* <div>
+          {" "}
+          <PdfViewer urlPdf={currentRessource.urlFichier} />
+        </div> */}
+        <PersistentDrawerLeft
+          details={
+            <RessourceDetailInfo
+              currentRessource={currentRessource}
+              categorie={categorie}
+              findNameOfUniversityIfExist={findNameOfUniversityIfExist}
+              findUserPublishedResource={findUserPublishedResource}
+              handleClickDownloadResource={handleClickDownloadResource}
+              handleSubmit={handleSubmit}
+              onSubmit={onSubmit}
+              register={register}
+              errors={errors}
+              users={users}
+              currentUser={currentUser}
+            />
+          }
+          mainContent={<PdfViewer urlPdf={currentRessource.urlFichier} />}
+        />
       </div>
     </div>
   );

@@ -7,6 +7,7 @@ import "./auth.css";
 import authStatusContext from "../../contexts/auth.context";
 import CustomizedSnackbars from "../../components/feedback/notif";
 import currentUserContext from "../../contexts/current-user.context";
+import usersContext from "../../contexts/users.context";
 
 export default function SignUp() {
   const [messageNotif, setMessageNotif] = useState("");
@@ -27,6 +28,7 @@ export default function SignUp() {
 
   const { isAuthenticated, setIsAuthenticated } = useContext(authStatusContext);
   const { setCurrentUser } = useContext(currentUserContext);
+  const { setUsers } = useContext(usersContext);
 
   // console.log("isAuthenticated: ", isAuthenticated);
 
@@ -51,6 +53,7 @@ export default function SignUp() {
       handleSubmitOpenNotif();
       setIsAuthenticated(res.data.isLoggedIn);
       setCurrentUser(res.data.user);
+      setUsers(res.data.users);
     } catch (error) {
       console.error("Error: ", error);
       if (error?.response?.status === 404 || error?.response?.status === 400) {
