@@ -36,19 +36,20 @@ export default function Login() {
   const { setCurrentUser } = useContext(currentUserContext);
   const { setUsers } = useContext(usersContext);
 
-  // console.log("isAuthenticated: ", isAuthenticated);
+  console.log("isAuthenticated: ", isAuthenticated);
 
   // console.log(auth);
   const onSubmit = async (dataFromUser, event) => {
     // console.log("data: ", dataFromUser);
     event.preventDefault();
     try {
+      console.log("log before fetch");
       const res = await axiosInstance.post(`/api/auth/login`, dataFromUser, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
       });
-      console.log("res: ", res); //joeitax3@gmail.com
+      // console.log("res: ", res); //joeitax3@gmail.com
       // setIsAuthenticated(res?.data?.isLoggedIn);
       setMessageNotif(res.data.message);
       setSeverityNotif("success");
@@ -59,7 +60,7 @@ export default function Login() {
       navigate(from, { replace: true });
       // l;
     } catch (error) {
-      console.error("Error: ", error);
+      // console.error("Error lors du login: ", error);
       if (error?.response?.status === 404 || error?.response?.status === 400) {
         setMessageNotif(error.response.data.message);
         setSeverityNotif("error");
@@ -73,6 +74,12 @@ export default function Login() {
       }
     }
   };
+
+  setTimeout(() => {
+    if (isAuthenticated) {
+      navigate(from, { replace: true });
+    }
+  }, 1000);
 
   const [isFocusEmailFiel, setIsFocusEmailFiel] = useState(false);
   const [isFocusPasswordFiel, setIsFocusPasswordFiel] = useState(false);

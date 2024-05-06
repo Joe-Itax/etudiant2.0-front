@@ -118,14 +118,15 @@ export default function RessourceDetailInfo({
           </div>
         </form>
         <div className="comments">
-          {!currentRessource ? (
+          {!currentRessource && !users.length > 0 ? (
             <div className="flex justify-center">
               <CircularProgress />
             </div>
           ) : (
             currentRessource.Comment.map((comment) => {
               const author = users.find((user) => user.id === comment.authorId);
-              // console.log("author: ", author);
+              console.log("author: ", author);
+              console.log("users: ", users);
               return (
                 <div key={comment.id}>
                   <div className="comment">

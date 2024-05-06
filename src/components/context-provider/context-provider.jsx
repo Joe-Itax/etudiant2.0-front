@@ -20,27 +20,51 @@ export default function ContextProvider({ children }) {
   useEffect(() => {
     const getData = async () => {
       try {
-        const usersReq = await axiosInstance.get(`/api/users`);
-        // console.log("users: ", usersReq);
-        setUsers(usersReq.data.users);
-        const universityReq = await axiosInstance.get(`/api/universities`);
-        // console.log("university: ", universityReq);
-        setUniversity(universityReq.data.universities);
+        try {
+          const usersReq = await axiosInstance.get(`/api/users`);
+          // console.log("users: ", usersReq);
+          setUsers(usersReq.data.users);
+        } catch (error) {
+          // console.log(
+          // "erreur lors de la recupération des utilisateurs: ",
+          //   error
+          // );
+        }
 
-        const ressourceReq = await axiosInstance.get(`/api/ressources`);
-        console.log("ressourceReq: ", ressourceReq);
-        setRessource(ressourceReq.data.ressources);
+        try {
+          const universityReq = await axiosInstance.get(`/api/universities`);
+          // console.log("university: ", universityReq);
+          setUniversity(universityReq.data.universities);
+        } catch (error) {
+          // console.log(
+          //   "erreur lors de la recupération des universités: ",
+          //   error
+          // );
+        }
 
-        const auth = await axiosInstance.get(`/api/auth/status`);
-        console.log("auth: ", auth);
-        setCurrentUser(auth.data.user);
-        setIsAuthenticated(auth.data.isAuthenticated);
+        try {
+          const ressourceReq = await axiosInstance.get(`/api/ressources`);
+          // console.log("ressourceReq: ", ressourceReq);
+          setRessource(ressourceReq.data.ressources);
+        } catch (error) {
+          // console.log("erreur lors de la recupération des ressources: ", error);
+        }
+
+        try {
+          const auth = await axiosInstance.get(`/api/auth/status`);
+          // console.log("auth: ", auth);
+          setCurrentUser(auth.data.user);
+          setIsAuthenticated(auth.data.isAuthenticated);
+          setUsers(auth.data.users);
+        } catch (error) {
+          // console.log(
+          //   "erreur lors de la recupération du status de connection: ",
+          //   error
+          // );
+          setIsAuthenticated(false);
+        }
       } catch (err) {
-        console.log(
-          "erreur lors de la recupération du status de connection: ",
-          err
-        );
-        setIsAuthenticated(false);
+        console.log("error lors de la récuperation des données: ", err);
       }
     };
     getData();
