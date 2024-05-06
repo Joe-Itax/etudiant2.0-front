@@ -68,8 +68,8 @@ export default function Login() {
         handleSubmitOpenNotif();
       }
 
-      if (error.code === "ERR_NETWORK") {
-        setMessageNotif("Serveur hors service.");
+      if (error?.code === "ERR_NETWORK") {
+        setMessageNotif(`${error?.code}: Serveur hors service.`);
         setSeverityNotif("error");
         handleSubmitOpenNotif();
       }

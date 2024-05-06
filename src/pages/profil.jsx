@@ -12,7 +12,8 @@ import { formatTimestamp } from "../utils/helper";
 
 import { CircularProgress } from "@mui/material";
 import InputFileUpload from "../components/profiles/profile-uploader";
-import axios from "axios";
+// import axios from "axios";
+import axiosInstance from "../utils/axios-instance";
 import CustomizedSnackbars from "../components/feedback/notif";
 
 export default function Profil() {
@@ -36,14 +37,13 @@ export default function Profil() {
     const formData = new FormData();
     formData.append("profileImage", file);
     try {
-      const res = await axios.put(
-        `${import.meta.env.VITE_API_BASE_URL}/api/users/${currentUser.id}`,
+      const res = await axiosInstance.put(
+        `/api/users/${currentUser.id}`,
         formData,
         {
           headers: {
             "Content-Type": "multipart/form-data",
           },
-          withCredentials: true,
         }
       );
       // console.log("Fichier téléchargé avec succès:", res);
@@ -61,9 +61,17 @@ export default function Profil() {
       }
     } catch (error) {
       // console.error("Erreur lors du téléchargement du fichier:", error);
-      setMessageNotif(error.response.data.message);
-      setSeverityNotif("error");
-      handleSubmitOpenNotif();
+      if (error?.response?.status === 404 || error?.response?.status === 400) {
+        setMessageNotif(error.response.data.message);
+        setSeverityNotif("error");
+        handleSubmitOpenNotif();
+      }
+
+      if (error?.code === "ERR_NETWORK") {
+        setMessageNotif(`${error?.code}`);
+        setSeverityNotif("error");
+        handleSubmitOpenNotif();
+      }
     }
   };
 

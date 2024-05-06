@@ -38,15 +38,7 @@ export default function ResourceDetail() {
   let findUserPublishedResource;
   let findNameOfUniversityIfExist;
   let currentRessource;
-  // if (resource) {
-  // findUserPublishedResource = users.find(
-  //   (user) => resource.userId === user.id
-  // );
 
-  // findNameOfUniversityIfExist = university.find(
-  //   (university) => resource.universityId === university.id
-  // );
-  // }
   if (ressource) {
     ressource.map((res) => {
       findUserPublishedResource = users.find((user) => res.userId === user.id);
@@ -58,8 +50,6 @@ export default function ResourceDetail() {
       if (res.id == id) {
         currentRessource = res;
       }
-
-      // currentRessource = res.find((ress) => ress.id === id);
     });
   }
 
@@ -133,9 +123,52 @@ export default function ResourceDetail() {
 
   const categorieKey = currentRessource.categorie;
   const categorie = categoriesMap[categorieKey] || "Autre";
+  const handleClickDownloadResource = async () => {
+    // alert("fichier téléchargé");
+    try {
+      const res = await axiosInstance.get(
+        `/api/ressources/${currentRessource.id}/download`,
+        {
+          responseType: "blob",
+        }
+      );
 
-  const handleClickDownloadResource = () => {
-    alert("fichier téléchargé");
+      const defaultFilename = `${currentRessource.title}-Etudiant-2.0.pdf`; // Nom par défaut
+      const dispositionHeader = res.headers["content-disposition"];
+      const filename = dispositionHeader
+        ? dispositionHeader.split("filename=")[1]
+        : defaultFilename;
+
+      console.log("res: ", res);
+
+      // Création d'un lien temporaire pour télécharger le fichier
+      const downloadUrl = window.URL.createObjectURL(new Blob([res.data]));
+      const link = document.createElement("a");
+      link.href = downloadUrl;
+      link.download = filename; // Récupération du nom du fichier
+
+      link.click(); // Simuler un clic pour télécharger le fichier
+
+      window.URL.revokeObjectURL(downloadUrl);
+
+      if (res?.status === 200) {
+        setSeverityNotif("success");
+        setMessageNotif("Fichier télécharger avec succès.");
+      } else {
+        setSeverityNotif("warning");
+        setMessageNotif(
+          "Une erreur est survenue lors du telechargement du fichier."
+        );
+      }
+      handleSubmitOpenNotif();
+    } catch (error) {
+      console.error("Erreur lors du telechargement du fichier:", error);
+      setSeverityNotif("error");
+      setMessageNotif(
+        "Une erreur est survenue lors du telechargement du fichier. Veuillez réessayer plustard."
+      );
+      handleSubmitOpenNotif();
+    }
   };
 
   return (

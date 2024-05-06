@@ -11,7 +11,7 @@ import ressourceContext from "../../contexts/ressource.context";
 // import { checkAuthStatus } from "../../utils/helper";
 
 export default function ContextProvider({ children }) {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
   const [users, setUsers] = useState([]);
   const [university, setUniversity] = useState([]);

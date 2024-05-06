@@ -55,13 +55,35 @@
   @apply w-full md:w-[1rem] text-white;
   width: 100% !important;
 }
-.profile-page
-  .MuiAutocomplete-root.MuiAutocomplete-hasPopupIcon.css-clttge-MuiAutocomplete-root {
+.profile-page .MuiAutocomplete-root.MuiAutocomplete-hasPopupIcon {
   color: #fff !important;
   border-radius: 5px !important;
-  border: 0.5px solid #ab8af1 !important;
+  border: 0.5px solid #6b7280 !important;
   outline: none !important;
 }
+.profile-page fieldset.MuiOutlinedInput-notchedOutline,
+.profile-page fieldset.MuiOutlinedInput-notchedOutline.css-igs3ac {
+  border-color: #6b7280 !important;
+}
+.profile-page
+  button.MuiButtonBase-root.MuiIconButton-root.MuiAutocomplete-popupIndicator,
+.profile-page
+  button.MuiButtonBase-root.MuiIconButton-root.MuiAutocomplete-popupIndicator
+  svg,
+.profile-page
+  button.MuiButtonBase-root.MuiIconButton-root.MuiAutocomplete-clearIndicator,
+.profile-page
+  button.MuiButtonBase-root.MuiIconButton-root.MuiAutocomplete-clearIndicator
+  svg {
+  fill: aliceblue !important;
+  color: #fff !important;
+}
+
+.profile-page .universityField .MuiStack-root.css-2cxzai,
+.profile-page .universityField .MuiStack-root {
+  width: 100% !important;
+}
+
 .profile-page .MuiStack-root.css-fedopx-MuiStack-root input {
   @apply text-white;
 }
@@ -133,6 +155,11 @@
 .profile-page .css-1jy569b-MuiFormLabel-root-MuiInputLabel-root,
 .profile-page #grouped-demo-label {
   @apply absolute bg-[#371577] px-2 pointer-events-none text-gray-200;
+  color: #fff !important;
+  font-size: 1rem !important;
+}
+.profile-page #grouped-demo {
+  @apply bg-[#371577] px-2 pointer-events-none text-gray-200;
   color: #fff !important;
   font-size: 1rem !important;
 }

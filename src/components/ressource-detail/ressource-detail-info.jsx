@@ -125,8 +125,8 @@ export default function RessourceDetailInfo({
           ) : (
             currentRessource.Comment.map((comment) => {
               const author = users.find((user) => user.id === comment.authorId);
-              console.log("author: ", author);
-              console.log("users: ", users);
+              // console.log("author: ", author);
+              // console.log("users: ", users);
               return (
                 <div key={comment.id}>
                   <div className="comment">
