@@ -9,6 +9,8 @@ export default function Home() {
       top: 0,
     });
   }, []);
+
+  // console.log("token: ", localStorage.getItem("jwt"));
   return (
     <div className="home-page">
       <HeroSection />

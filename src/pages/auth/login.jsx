@@ -57,6 +57,7 @@ export default function Login() {
       setIsAuthenticated(res.data.isLoggedIn);
       setCurrentUser(res.data.user);
       setUsers(res.data.users);
+      localStorage.setItem("jwt", res.data.token);
       navigate(from, { replace: true });
       // l;
     } catch (error) {

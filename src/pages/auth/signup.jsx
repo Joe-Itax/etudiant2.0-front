@@ -54,6 +54,8 @@ export default function SignUp() {
       setIsAuthenticated(res.data.isLoggedIn);
       setCurrentUser(res.data.user);
       setUsers(res.data.users);
+      localStorage.setItem("jwt", res.data.token);
+      console.log(localStorage.getItem("jwt"));
     } catch (error) {
       console.error("Error: ", error);
       if (error?.response?.status === 404 || error?.response?.status === 400) {
