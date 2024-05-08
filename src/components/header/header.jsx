@@ -8,9 +8,12 @@ import { RiCloseLargeLine } from "@remixicon/react";
 import "./header.css";
 import { CircularProgress } from "@mui/material";
 
+import CustomizedSnackbars from "../feedback/notif";
+
 import currentUserContext from "../../contexts/current-user.context";
 import authStatusContext from "../../contexts/auth.context";
-import axios from "axios";
+// import axios from "axios";
+import axiosInstance from "../../utils/axios-instance";
 import CustomBouton from "../bouttons/custom-button";
 
 import OpenMobileMenu from "./navbar-mobile/navbar-mobile";
@@ -18,6 +21,13 @@ import OpenMobileMenu from "./navbar-mobile/navbar-mobile";
 export default function Header() {
   const [isUnderTablet, setIsUnderTablet] = useState(false);
   const [menuIsOpen, setMenuIsOpen] = useState(false);
+
+  const [messageNotif, setMessageNotif] = useState("");
+  const [severityNotif, setSeverityNotif] = useState("");
+  const [openNotif, setOpenNotif] = useState(false);
+  const handleSubmitOpenNotif = () => {
+    setOpenNotif(true);
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -41,20 +51,33 @@ export default function Header() {
 
   const handleLogoutSubmit = async () => {
     try {
-      const logoutRes = await axios.get(
-        `${import.meta.env.VITE_API_BASE_URL}/api/auth/logout`,
-        {
-          withCredentials: true,
-        }
-      );
-      // console.log(logoutRes);
+      const logoutRes = await axiosInstance.get(`/api/auth/logout`);
+      console.log(logoutRes);
       if (logoutRes.status === 200) {
-        setIsAuthenticated(false);
+        setMessageNotif(logoutRes.data.message);
+        setSeverityNotif("success");
+        handleSubmitOpenNotif();
+        localStorage.removeItem("jwt");
+        setIsAuthenticated(logoutRes.data.isAuthenticated);
         setCurrentUser({});
         navigate("/");
       }
     } catch (error) {
       console.log("erreur: ", error);
+      setSeverityNotif("error");
+      // console.error("Error lors du login: ", error);
+      if (error?.response?.status === 404 || error?.response?.status === 400) {
+        setMessageNotif(error.response.data.message);
+      }
+
+      if (error?.code === "ERR_NETWORK") {
+        setMessageNotif(`${error?.code}: Serveur hors service.`);
+      } else {
+        setMessageNotif(
+          "Oups, Une erreur s'est produite lors de la deconnection de votre compte.Veuillez réessayé plutard!"
+        );
+      }
+      handleSubmitOpenNotif();
     }
   };
 
@@ -85,6 +108,12 @@ export default function Header() {
 
   return (
     <header className="relative z-50">
+      <CustomizedSnackbars
+        open={openNotif}
+        message={messageNotif}
+        setOpen={setOpenNotif}
+        severity={severityNotif}
+      />
       <div className="flex max-[767px]:w-full md:w-96 lg:w-[30rem] max-[767px]:justify-between items-center">
         <div className="logo ">
           <Link to={"/"}>

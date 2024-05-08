@@ -61,18 +61,20 @@ export default function Login() {
       navigate(from, { replace: true });
       // l;
     } catch (error) {
+      setSeverityNotif("error");
       // console.error("Error lors du login: ", error);
       if (error?.response?.status === 404 || error?.response?.status === 400) {
         setMessageNotif(error.response.data.message);
-        setSeverityNotif("error");
-        handleSubmitOpenNotif();
       }
 
       if (error?.code === "ERR_NETWORK") {
         setMessageNotif(`${error?.code}: Serveur hors service.`);
-        setSeverityNotif("error");
-        handleSubmitOpenNotif();
+      } else {
+        setMessageNotif(
+          "Oups, Une erreur s'est produite lors de la connection de votre compte.Veuillez réessayé plutard!"
+        );
       }
+      handleSubmitOpenNotif();
     }
   };
 
