@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 import Avatar from "react-avatar";
 import "./index.css";
@@ -22,7 +22,6 @@ export default function Profil() {
       top: 0,
     });
   }, []);
-  const navigate = useNavigate();
   const { isAuthenticated } = useContext(authStatusContext);
   const { currentUser, setCurrentUser } = useContext(currentUserContext);
 
@@ -74,17 +73,6 @@ export default function Profil() {
       }
     }
   };
-
-  useEffect(() => {
-    setTimeout(() => {
-      if (!isAuthenticated) {
-        navigate("/login");
-      }
-    }, 1000);
-    if (Object.keys(currentUser).length === 0 && isAuthenticated) {
-      window.location.reload();
-    }
-  }, [isAuthenticated, currentUser, navigate]);
 
   if (isAuthenticated) {
     return (
@@ -139,12 +127,14 @@ export default function Profil() {
         <DangerSection />
       </div>
     );
-  } else {
+  } else if (isAuthenticated === null) {
     return (
-      <div className="flex w-full h-full justify-center mt-40">
+      <div className="flex w-full h-[30rem] justify-center items-center">
         {" "}
         <CircularProgress />
       </div>
     );
+  } else {
+    return <Navigate to={"/login"} replace={true} />;
   }
 }

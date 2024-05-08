@@ -57,7 +57,7 @@ export default function Header() {
         setMessageNotif(logoutRes.data.message);
         setSeverityNotif("success");
         handleSubmitOpenNotif();
-        localStorage.removeItem("jwt");
+        // localStorage.removeItem("jwt");
         setIsAuthenticated(logoutRes.data.isAuthenticated);
         setCurrentUser({});
         navigate("/");
@@ -152,7 +152,11 @@ export default function Header() {
               </li>
               {isUnderTablet && (
                 <div className="isUndertable">
-                  {!isAuthenticated ? (
+                  {isAuthenticated === null ? (
+                    <div>
+                      <CircularProgress />
+                    </div>
+                  ) : isAuthenticated === false || !currentUser ? (
                     <div className="not-connected">
                       <li className={``}>
                         <Link to={"/signup"} className="signup">
@@ -165,7 +169,7 @@ export default function Header() {
                         </Link>
                       </li>
                     </div>
-                  ) : currentUser.profile ? (
+                  ) : (
                     <div className="box-profil-image text-gray-700">
                       <li>
                         <div className="flex items-center text-gray-700">
@@ -205,8 +209,6 @@ export default function Header() {
                         </span>
                       </li>
                     </div>
-                  ) : (
-                    <CircularProgress />
                   )}
                 </div>
               )}
@@ -288,7 +290,11 @@ export default function Header() {
       </nav>
 
       <nav className="second">
-        {!isAuthenticated ? (
+        {isAuthenticated === null ? (
+          <div>
+            <CircularProgress />
+          </div>
+        ) : isAuthenticated === false ? (
           <ul className="">
             <li>
               <Link to={`/signup`}>

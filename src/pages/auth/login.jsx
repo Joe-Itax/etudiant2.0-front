@@ -1,6 +1,6 @@
 import { useState, useContext } from "react";
 import { useForm } from "react-hook-form";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useLocation, Navigate } from "react-router-dom";
 import axiosInstance from "../../utils/axios-instance";
 import amico from "/assets/amico.svg";
 import "./auth.css";
@@ -27,7 +27,6 @@ export default function Login() {
     getValues,
   } = useForm();
 
-  const navigate = useNavigate();
   const location = useLocation();
 
   const from = location.state?.from || "/"; // Retourne à la page précédente ou à la racine
@@ -36,14 +35,11 @@ export default function Login() {
   const { setCurrentUser } = useContext(currentUserContext);
   const { setUsers } = useContext(usersContext);
 
-  console.log("isAuthenticated: ", isAuthenticated);
-
   // console.log(auth);
   const onSubmit = async (dataFromUser, event) => {
     // console.log("data: ", dataFromUser);
     event.preventDefault();
     try {
-      console.log("log before fetch");
       const res = await axiosInstance.post(`/api/auth/login`, dataFromUser, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
@@ -57,8 +53,7 @@ export default function Login() {
       setIsAuthenticated(res.data.isLoggedIn);
       setCurrentUser(res.data.user);
       setUsers(res.data.users);
-      localStorage.setItem("jwt", res.data.token);
-      navigate(from, { replace: true });
+      // localStorage.setItem("jwt", res.data.token);
       // l;
     } catch (error) {
       setSeverityNotif("error");
@@ -77,12 +72,6 @@ export default function Login() {
       handleSubmitOpenNotif();
     }
   };
-
-  setTimeout(() => {
-    if (isAuthenticated) {
-      navigate(from, { replace: true });
-    }
-  }, 1000);
 
   const [isFocusEmailFiel, setIsFocusEmailFiel] = useState(false);
   const [isFocusPasswordFiel, setIsFocusPasswordFiel] = useState(false);
@@ -108,18 +97,12 @@ export default function Login() {
         setOpen={setOpenNotif}
         severity={severityNotif}
       />
-      {isAuthenticated ? (
+      {isAuthenticated === null ? (
         <div className="w-full mt-40 h-full flex justify-center items-center">
           <CircularProgress />
         </div>
-      ) : (
+      ) : isAuthenticated === false ? (
         <div className="w-full h-auto mt-20 flex justify-center items-center relative min-[860px]:px-20 min-[400px]:px-10 px-4">
-          <CustomizedSnackbars
-            open={openNotif}
-            message={messageNotif}
-            setOpen={setOpenNotif}
-            severity={severityNotif}
-          />
           <div className="bg-[#371577] flex justify-center min-[860px]:gap-16 gap-10 p-4 py-10 rounded-md mb-20 max-w-[70rem] w-full">
             <div className="img w-[50%] lg:max-w-[25rem] relative hidden md:block">
               <img
@@ -259,6 +242,8 @@ export default function Login() {
             </div>
           </div>
         </div>
+      ) : (
+        <Navigate to={from} replace={true} />
       )}
     </div>
   );
