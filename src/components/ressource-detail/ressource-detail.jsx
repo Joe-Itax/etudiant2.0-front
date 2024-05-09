@@ -118,9 +118,6 @@ export default function ResourceDetail() {
     Autre: "Autre",
   };
 
-  // console.log("currentRessource: ", currentRessource);
-  // console.log("ressource: ", resource);
-
   const categorieKey = currentRessource.categorie;
   const categorie = categoriesMap[categorieKey] || "Autre";
   const handleClickDownloadResource = async () => {
