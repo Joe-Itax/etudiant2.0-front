@@ -1,11 +1,26 @@
-import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { CloudUpload } from "@mui/icons-material";
 
 export default function UploadSuccess() {
-  window.scrollTo({
-    top: 0,
-  });
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+    });
+  }, []);
+
+  const location = useLocation();
+  const navigate = useNavigate();
+
+  const from = location.state?.from || "/";
+
+  useEffect(() => {
+    if (from !== "/upload") {
+      navigate("/");
+    }
+  }, [from, navigate]);
+
   return (
     <div className="upload-success-page py-8 pb-24">
       <div className="flex flex-col justify-center items-center mt-16 px-8">

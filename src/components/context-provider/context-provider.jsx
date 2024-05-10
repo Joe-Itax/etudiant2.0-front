@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import axiosInstance from "../../utils/axios-instance";
 
+import authAdminStatusContext from "../../contexts/auth-admin.context";
 import authStatusContext from "../../contexts/auth.context";
 import currentUserContext from "../../contexts/current-user.context";
 import usersContext from "../../contexts/users.context";
@@ -11,6 +12,7 @@ import ressourceContext from "../../contexts/ressource.context";
 // import { checkAuthStatus } from "../../utils/helper";
 
 export default function ContextProvider({ children }) {
+  const [isAdminAuthenticated, setAdminIsAuthenticated] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(null);
   const [currentUser, setCurrentUser] = useState({});
   const [users, setUsers] = useState([]);
@@ -72,21 +74,25 @@ export default function ContextProvider({ children }) {
 
   return (
     <>
-      <usersContext.Provider value={{ users, setUsers }}>
-        <ressourceContext.Provider value={{ ressource, setRessource }}>
-          <universityContext.Provider value={{ university, setUniversity }}>
-            <authStatusContext.Provider
-              value={{ isAuthenticated, setIsAuthenticated }}
-            >
-              <currentUserContext.Provider
-                value={{ currentUser, setCurrentUser }}
+      <authAdminStatusContext.Provider
+        value={{ isAdminAuthenticated, setAdminIsAuthenticated }}
+      >
+        <usersContext.Provider value={{ users, setUsers }}>
+          <ressourceContext.Provider value={{ ressource, setRessource }}>
+            <universityContext.Provider value={{ university, setUniversity }}>
+              <authStatusContext.Provider
+                value={{ isAuthenticated, setIsAuthenticated }}
               >
-                {children}
-              </currentUserContext.Provider>
-            </authStatusContext.Provider>
-          </universityContext.Provider>
-        </ressourceContext.Provider>
-      </usersContext.Provider>
+                <currentUserContext.Provider
+                  value={{ currentUser, setCurrentUser }}
+                >
+                  {children}
+                </currentUserContext.Provider>
+              </authStatusContext.Provider>
+            </universityContext.Provider>
+          </ressourceContext.Provider>
+        </usersContext.Provider>
+      </authAdminStatusContext.Provider>
     </>
   );
 }

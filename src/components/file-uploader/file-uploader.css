@@ -20,8 +20,10 @@
   @apply self-end;
 }
 
-.custom-uploader .MuiStack-root.css-fedopx-MuiStack-root {
+.custom-uploader .MuiStack-root.css-fedopx-MuiStack-root,
+.custom-uploader .input-box .MuiStack-root {
   @apply w-full;
+  width: 100% !important;
 }
 
 .custom-uploader .step-details .form-step2 {

@@ -125,8 +125,8 @@ export default function MultiStepForm() {
         setSeverityNotif("success");
         handleSubmitOpenNotif();
         setTimeout(() => {
-          navigate("/upload/success");
-        }, 2500);
+          navigate("/upload/success", { state: { from: "/upload" } });
+        }, 2000);
         // console.log("ress: ", res);
         // console.log("formDataToSend: ", formDataToSend);
       } catch (error) {
@@ -331,7 +331,7 @@ export default function MultiStepForm() {
                       </div>
                       <div className="input-box">
                         <InputAutocomplete
-                          className="w-full"
+                          className="input-autocomplete"
                           label={"Université"}
                           options={university}
                           valuee={fileData?.university || ""}
@@ -340,7 +340,7 @@ export default function MultiStepForm() {
                           }
                         />
 
-                        <span className="text-sm text-gray-600">
+                        <span className="text-sm text-start text-gray-600">
                           Si le document ne provient de votre institution
                           actuelle, vous pouvez laisser ce champ vide, sinon
                           vous pouvez faire mention de votre institution.
@@ -358,7 +358,7 @@ export default function MultiStepForm() {
                       </div>
                       <div className="input-box">
                         <InputAutocomplete
-                          className="w-full"
+                          className="input-autocomplete"
                           label={"Type de document *"}
                           options={categorie}
                           valuee={fileData?.categorie || ""}
@@ -367,7 +367,7 @@ export default function MultiStepForm() {
                           }
                         />
 
-                        <span className="text-sm text-gray-600 hidden">
+                        <span className="text-sm text-start text-gray-600 hidden">
                           Si le document ne provient de votre institution
                           actuelle, vous pouvez laisser ce champ vide, sinon
                           vous pouvez faire mention de votre institution.
@@ -410,7 +410,7 @@ export default function MultiStepForm() {
                           }
                         />
 
-                        <span className="text-sm text-gray-600">
+                        <span className="text-sm text-start text-gray-600">
                           Donne à ton document un titre descriptif et clair
                         </span>
                       </div>
@@ -442,7 +442,7 @@ export default function MultiStepForm() {
                           }
                         />
 
-                        <span className="text-sm text-gray-600">
+                        <span className="text-sm text-start text-gray-600">
                           Merci de donner autant d&apos;informations
                           supplémentaires que possibles sur le document.
                         </span>
