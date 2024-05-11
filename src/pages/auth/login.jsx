@@ -58,7 +58,11 @@ export default function Login() {
     } catch (error) {
       setSeverityNotif("error");
       // console.error("Error lors du login: ", error);
-      if (error?.response?.status === 404 || error?.response?.status === 400) {
+      if (
+        error?.response?.status === 404 ||
+        error?.response?.status === 400 ||
+        error?.response
+      ) {
         setMessageNotif(error.response.data.message);
       }
 

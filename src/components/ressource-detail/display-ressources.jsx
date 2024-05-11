@@ -70,52 +70,54 @@ export default function DisplayRessources() {
             Ressources les plus recentes
           </h2>
         </div>
-        {ressource.map((res) => {
-          const categoriesMap = {
-            Livre: "Livre",
-            NoteDeCours: "Note de Cours",
-            Exercices: "Exercices",
-            PreparationExamen: "Préparation d'examen",
-            Tp: "Travail pratique (TP)",
-            Td: "Travail dirigé (TD)",
-            Rapports: "Rapports",
-            Resumes: "Résumés",
-            Autre: "Autre",
-          };
-          const categorieKey = res.categorie;
-          const categorie = categoriesMap[categorieKey] || "Autre";
+        {ressource
+          .map((res) => {
+            const categoriesMap = {
+              Livre: "Livre",
+              NoteDeCours: "Note de Cours",
+              Exercices: "Exercices",
+              PreparationExamen: "Préparation d'examen",
+              Tp: "Travail pratique (TP)",
+              Td: "Travail dirigé (TD)",
+              Rapports: "Rapports",
+              Resumes: "Résumés",
+              Autre: "Autre",
+            };
+            const categorieKey = res.categorie;
+            const categorie = categoriesMap[categorieKey] || "Autre";
 
-          return (
-            <div key={res.id}>
-              <AlertDialog2
-                open={open}
-                handleClose={handleClose}
-                handleClickToLogin={() => {
-                  navigate("/login", {
-                    state: { from: `/ressources/${res.id}` },
-                  });
-                }}
-              />
-              <Link
-                className="flex items-start gap-3 hover:bg-[#f1f7fe] rounded-3xl py-6 px-2"
-                to={`/ressources/${res.id}`}
-                onClick={handleClickOpen}
-              >
-                <div>
-                  <RiBookFill color="#967fd6" size={25} />
-                </div>
-                <div className="flex flex-col gap-2">
-                  <h3 className="text-[#3092fa] font-semibold text-xl">
-                    {res.title}
-                  </h3>
-                  <p className="categorie text-gray-600 text-[1rem]">
-                    categorie: {categorie}
-                  </p>
-                </div>
-              </Link>
-            </div>
-          );
-        })}
+            return (
+              <div key={res.id}>
+                <AlertDialog2
+                  open={open}
+                  handleClose={handleClose}
+                  handleClickToLogin={() => {
+                    navigate("/login", {
+                      state: { from: `/ressources/${res.id}` },
+                    });
+                  }}
+                />
+                <Link
+                  className="flex items-start gap-3 hover:bg-[#f1f7fe] rounded-3xl py-6 px-2"
+                  to={`/ressources/${res.id}`}
+                  onClick={handleClickOpen}
+                >
+                  <div>
+                    <RiBookFill color="#967fd6" size={25} />
+                  </div>
+                  <div className="flex flex-col gap-2">
+                    <h3 className="text-[#3092fa] font-semibold text-xl">
+                      {res.title}
+                    </h3>
+                    <p className="categorie text-gray-600 text-[1rem]">
+                      categorie: {categorie}
+                    </p>
+                  </div>
+                </Link>
+              </div>
+            );
+          })
+          .reverse()}
       </div>
     </>
   );
