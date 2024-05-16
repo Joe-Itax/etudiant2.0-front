@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import AlertDialog from "../feedback/alert-dialog";
 import { RiDeleteBin5Fill } from "@remixicon/react";
+import axiosInstance from "../../utils/axios-instance";
+import currentUserContext from "../../contexts/current-user.context";
 
 export default function DangerSection() {
+  const { currentUser } = useContext(currentUserContext);
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -13,7 +16,15 @@ export default function DangerSection() {
     setOpen(false);
   };
   const handleSubmitDeleteAccountReq = async () => {
-    alert(`Compte supprimer avec succès !`);
+    try {
+      const res = await axiosInstance.put(
+        `/api/users/delete-account/${currentUser.id}`
+      );
+
+      console.log("delete account response: ", res);
+    } catch (error) {
+      console.log("Erreur lors de la suppression du compte: ", error);
+    }
     handleClose();
   };
   return (
