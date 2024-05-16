@@ -67,7 +67,7 @@ export default function Login() {
       }
 
       if (error?.code === "ERR_NETWORK") {
-        setMessageNotif(`${error?.code}: Serveur hors service.`);
+        setMessageNotif(`${error?.message}: Serveur hors service.`);
       } else if (error?.response?.data) {
         setMessageNotif(error?.response?.data.message);
       } else {
