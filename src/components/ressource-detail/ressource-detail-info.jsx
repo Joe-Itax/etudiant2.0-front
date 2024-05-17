@@ -135,7 +135,7 @@ export default function RessourceDetailInfo({
                         {!author?.profile?.urlProfilImage ? (
                           <div className="">
                             <Avatar
-                              name={`${currentUser.firstname} ${currentUser.lastname}`}
+                              name={`${author.firstname} ${author.lastname}`}
                               round={true}
                               size="50px"
                               src={null}
